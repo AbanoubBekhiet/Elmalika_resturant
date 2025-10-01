@@ -1,0 +1,293 @@
+import React, { useState, useEffect } from "react";
+import { useParams, Link } from "react-router-dom";
+import { AiFillStar } from "react-icons/ai";
+import axios from "axios";
+import Loader from "./../loaders/Loader.jsx";
+import { FaShare } from "react-icons/fa";
+import defaultImage from "./../assets/product.jpg";
+import SimilarProducts from "./SimilarProducts.jsx";
+import Rating from "./Rating.jsx";
+import { ToastContainer } from "react-toastify";
+
+// 🔹 baseURL هنا
+const API_BASE_URL = "https://api.queen.kitchen";
+
+export default function ProductDetails() {
+	const { productId, categoryId } = useParams();
+	const [product, setProduct] = useState(null);
+	const [similarProducts, setsimilarProducts] = useState([]);
+	const [qty, setQty] = useState(1);
+	const [notes, setNotes] = useState("");
+	const [ItemSize, setItemSize] = useState("وسط");
+	const [loading, setLoading] = useState(true);
+	const [adds, setAdds] = useState([]);
+	// جلب المنتج
+	useEffect(() => {
+		setLoading(true);
+		axios
+			.get(`${API_BASE_URL}/products/${productId}`, {
+				withCredentials: true,
+				headers: { "Content-Type": "application/json" },
+			})
+			.then((res) => {
+				setProduct(res?.data || null);
+				console.log(res.data);
+			})
+			.catch((error) => {
+				console.log(error);
+			})
+			.finally(() => {
+				setLoading(false);
+			});
+	}, [productId]);
+
+	// جلب منتجات مشابهة
+	useEffect(() => {
+		let isMounted2 = true;
+		setLoading(true);
+
+		axios
+			.get(`${API_BASE_URL}/products?categoryId=${categoryId}`, {
+				withCredentials: true,
+				headers: { "Content-Type": "application/json" },
+			})
+			.then((res) => {
+				if (isMounted2) {
+					setsimilarProducts(res?.data?.data || []);
+				}
+			})
+			.catch(() => {
+				setProduct([]);
+			})
+			.finally(() => {
+				if (isMounted2) setLoading(false);
+			});
+
+		return () => {
+			isMounted2 = false;
+		};
+	}, [categoryId]);
+
+	function handleAddAddition(add) {
+		setAdds((prevAdds) => {
+			if (prevAdds.includes(add)) {
+				return prevAdds.filter((a) => a !== add);
+			} else {
+				return [...prevAdds, add];
+			}
+		});
+	}
+
+	return (
+		<div>
+			{loading ? (
+				<Loader />
+			) : (
+				<>
+					<div
+						dir="rtl"
+						className="px-6 pt-28 pb-8 max-w-6xl mx-auto space-y-8"
+					>
+						{/* Breadcrumb */}
+						<nav className="text-sm text-gray-500 text-right">
+							<Link to="/" className="hover:underline">
+								الرئيسية
+							</Link>
+							<span className="px-2">/</span>
+							<Link to="/ready-to-eat" className="hover:underline">
+								جاهز للأكل
+							</Link>
+							<span className="px-2">/</span>
+							<span className="text-gray-700">{product?.name || ""}</span>
+						</nav>
+
+						<div className="grid md:grid-cols-2 gap-50 items-start">
+							{/* Product Gallery */}
+							<div>
+								<div className="relative">
+									<div className="absolute  top-1/4 -left-20 transform -translate-y-1/2 flex flex-col space-y-3 z-10">
+										{/* <button className="w-10 h-10 bg-white rounded-lg shadow flex items-center justify-center">
+											<IoChevronBack size={20} />
+										</button>
+										<button className="w-10 h-10 bg-white rounded-lg shadow flex items-center justify-center">
+											<IoChevronForward size={20} />
+										</button> */}
+										<div className="bg-gray-200 p-2 rounded-lg">
+											<FaShare size={30} className="text-yellow-500 " />
+										</div>
+										<div className="bg-gray-200 p-2 rounded-lg">
+											<FaShare size={30} className="text-yellow-500 " />
+										</div>
+									</div>
+
+									<div className="w-full h-[700px] contain-content overflow-hidden rounded-lg">
+										<img
+											src={product?.imageUrl || defaultImage}
+											alt={product?.name || "No name"}
+											className="w-full h-full object-cover"
+										/>
+									</div>
+								</div>
+								<div className="flex justify-around mt-10">
+									{similarProducts.slice(0, 5).map((e, i) => (
+										<img
+											key={i}
+											src={e.imageUrl || defaultImage}
+											alt=""
+											className="w-20 h-25 rounded-2xl"
+										/>
+									))}
+								</div>
+							</div>
+
+							{/* Product Details */}
+							<div className="space-y-6">
+								<h1 className="text-3xl font-bold">{product?.name || ""}</h1>
+								<div className="flex justify-between w-5xs border-b border-dashed border-gray-400 p-5">
+									<div className="flex items-baseline space-x-4">
+										<span className="text-2xl font-bold">
+											{product?.price ? `${product.price} جنيه` : ""}
+										</span>
+									</div>
+									<div className="flex items-center space-x-3">
+										{/* النجوم */}
+										<div className="flex text-yellow-500">
+											{Array.from({ length: 5 }).map((_, i) => (
+												<AiFillStar
+													key={i}
+													className={
+														i < Math.round(product?.ratingAverage || 0)
+															? "text-yellow-500"
+															: "text-gray-300"
+													}
+												/>
+											))}
+										</div>
+
+										{/* عدد التقييمات */}
+										<span className="ml-2 text-sm text-gray-600">
+											{product?.ratingCount > 0
+												? `(${product.ratingCount} تقييم)`
+												: "لا توجد تقييمات"}
+										</span>
+									</div>
+								</div>
+
+								<div className="flex flex-col">
+									<h3>الوصف</h3>
+									<p className="text-gray-600 text-sm leading-relaxed">
+										{product?.description || "لا توجد تفاصيل متاحة"}
+									</p>
+								</div>
+
+								{/* Sizes */}
+								<div className="space-y-2">
+									<label className="block text-sm font-medium text-gray-700">
+										الأحجام:
+									</label>
+									<div className="flex space-x-2">
+										{["صغير", "وسط", "كبير"].map((size) => (
+											<button
+												onClick={() => setItemSize(size)}
+												key={size}
+												className={`px-4 py-2 rounded-full border ${
+													size === ItemSize
+														? "border-[#FFC222] text-[#FFC222]"
+														: "border-gray-300 text-gray-700"
+												}`}
+											>
+												{size}
+											</button>
+										))}
+									</div>
+								</div>
+
+								{/* Extras */}
+								<div className="space-y-2">
+									<label className="block text-sm font-medium text-gray-700">
+										الإضافات:
+									</label>
+									<div className="flex space-x-2">
+										{["بطاطس", "صلصات", "كولا"].map((extra) => (
+											<button
+												onClick={() => handleAddAddition(extra)}
+												key={extra}
+												className={`px-4 py-2 rounded-full border ${
+													adds.includes(extra)
+														? "border-[#FFC222] text-[#FFC222]"
+														: "border-gray-300 text-gray-700"
+												}`}
+											>
+												{extra}
+											</button>
+										))}
+									</div>
+								</div>
+
+								{/* Quantity */}
+								<div className="space-y-2">
+									<label className="block text-sm font-medium text-gray-700">
+										الكمية:
+									</label>
+									<div className="flex items-center space-x-2">
+										<button
+											onClick={() => qty > 1 && setQty(qty - 1)}
+											className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-full"
+										>
+											–
+										</button>
+										<span className="min-w-[32px] text-center">{qty}</span>
+										<button
+											onClick={() => setQty(qty + 1)}
+											className="w-8 h-8 flex items-center justify-center border border-gray-300 rounded-full"
+										>
+											+
+										</button>
+									</div>
+								</div>
+
+								{/* Notes */}
+								<div className="space-y-2">
+									<label className="block text-sm font-medium text-gray-700">
+										ملاحظات:
+									</label>
+									<textarea
+										value={notes}
+										onChange={(e) => setNotes(e.target.value)}
+										rows={4}
+										className="w-full border border-gray-300 rounded-lg p-3 text-sm placeholder-gray-400"
+										placeholder="أضف ملاحظاتك على الطلب، مثال: بدون زيتون..."
+									/>
+								</div>
+
+								{/* Action Buttons */}
+								<div className="flex space-x-4">
+									<button className="flex-1 border border-[#FFC222] text-[#FFC222] py-3 rounded-full font-semibold hover:bg-[#FFF5E1] transition">
+										إضافة إلى السلة
+									</button>
+								</div>
+							</div>
+						</div>
+						<ToastContainer
+							rtl
+							position="top-right"
+							autoClose={3000}
+							hideProgressBar={false}
+							newestOnTop={false}
+							closeOnClick
+							pauseOnFocusLoss
+							draggable
+							pauseOnHover
+						/>
+					</div>
+					{product && (
+						<>
+							<SimilarProducts categoryId={categoryId} />
+							<Rating productId={productId} />
+						</>
+					)}
+				</>
+			)}
+		</div>
+	);
+}

@@ -1,0 +1,19 @@
+@import "tailwindcss";
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
+@font-face {
+    font-family: 'Brando';
+    src: url('./assets/fonts/alfont_com_Brando-Arabic-Text.otf') format('opentype');
+    font-weight: normal;
+    font-style: normal;
+  }
+  
+  /* استخدم الخط عالميًا على كل الصفحة */
+  body {
+    font-family: 'Brando', sans-serif;
+  }
+  
