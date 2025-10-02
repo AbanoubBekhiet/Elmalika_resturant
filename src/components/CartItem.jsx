@@ -5,7 +5,6 @@ import DefaultImage from "../assets/product.jpg";
 
 function CartItem({ item }) {
   const { updateQuantity, removeFromCart } = useContext(CartContext);
-
   const handleIncrease = () => {
     updateQuantity(item.id, item.quantity + 1);
   };
@@ -17,7 +16,6 @@ function CartItem({ item }) {
   const handleRemove = () => {
     removeFromCart(item.id);
   };
-
   return (
     <div
       className="flex items-center gap-4 p-4 bg-white border-b border-gray-100 relative shadow-2xl m-4"
@@ -35,8 +33,8 @@ function CartItem({ item }) {
       {/* Product Image */}
       <div className="flex-shrink-0">
         <img
-          src={item.product.imageUrl ?? DefaultImage}
-          alt={item.product.name}
+          src={item?.product?.imageUrl ?? DefaultImage}
+          alt={item?.product?.name}
           className="w-20 h-16 object-cover rounded-lg"
         />
       </div>
@@ -44,13 +42,13 @@ function CartItem({ item }) {
       {/* Product Info */}
       <div className="flex-1 text-right pr-2">
         <h3 className="text-lg font-bold text-gray-900 mb-1">
-          {item.product.name} ({item.size?.name})
+          {item?.product?.name} ({item.size?.name})
         </h3>
         <div className="text-sm text-gray-500 mb-2 leading-relaxed">
-          {item.product.description}
+          {item?.product?.description}
         </div>
         <div className="text-lg font-bold text-gray-900">
-          {item.itemTotal} <span className="text-sm font-normal">EGP</span>
+          {item?.size?.price} <span className="text-sm font-normal">EGP</span>
         </div>
       </div>
 
@@ -58,14 +56,14 @@ function CartItem({ item }) {
       <div className="flex items-center gap-2 flex-shrink-0">
         <button
           onClick={handleDecrease}
-          disabled={item.quantity <= 1}
+          disabled={item?.quantity <= 1}
           className="w-8 h-8 flex items-center justify-center bg-gray-100 hover:bg-gray-200 disabled:bg-gray-50 disabled:text-gray-400 disabled:cursor-not-allowed text-gray-600 font-bold transition-colors rounded-sm"
         >
           -
         </button>
 
         <div className="w-8 h-8 flex items-center justify-center font-bold text-sm rounded-sm">
-          {item.quantity}
+          {item?.quantity}
         </div>
 
         <button

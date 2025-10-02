@@ -5,41 +5,44 @@ import CartItem from "./CartItem";
 import { Link, useLocation } from "react-router-dom";
 
 export default function Cart({ isOpen, setIsOpen }) {
-	const { cart, loading ,isAuthenticated} = useContext(CartContext);
+	const { cart, loading, isAuthenticated } = useContext(CartContext);
 	const location = useLocation();
 
 	if (!isOpen) return null;
 
-	// Shared cart container
-	const CartContainer = ({ children, setIsOpen }) => (
-  <div className="fixed inset-0 z-50 flex justify-center md:justify-start">
-    {/* Overlay background */}
-    <div
-      className="absolute inset-0 bg-black/40"
-      onClick={() => setIsOpen(false)}
-    ></div>
+	// Wrapper for overlay + cart panel
+	const CartWrapper = ({ children }) => (
+		<div className="fixed inset-0 z-50 flex justify-center md:justify-start">
+			{/* Overlay */}
+			<div
+				className="absolute inset-0 bg-black/40"
+				onClick={() => setIsOpen(false)}
+			></div>
 
-    {/* Cart Panel */}
-    <div
-      className="
-        relative bg-white shadow-lg rounded-2xl overflow-y-auto
-        w-full max-h-[60vh]
-        md:w-1/3 md:h-full md:rounded-none
-        animate-slideDown md:animate-slideInLeft
-        top-20 left-20
-        
-      "
-    >
-      {children}
-    </div>
-  </div>
-);
+			{/* Cart Panel */}
+			<div
+				className="
+          relative bg-white shadow-lg overflow-y-auto
+          w-full max-h-[90vh] 
+          rounded-b-2xl
+          animate-slideDown
+          top-0 left-0
 
+          md:w-1/3 md:h-full
+          md:rounded-none
+          md:animate-slideInLeft
+          md:top-20 md:left-20
+        "
+			>
+				{children}
+			</div>
+		</div>
+	);
 
 	// Not logged in → show login/signup
 	if (!isAuthenticated) {
 		return (
-			<CartContainer>
+			<CartWrapper>
 				<div className="flex justify-between items-center p-4 border-b border-gray-200">
 					<h2 className="font-bold text-2xl">السلة</h2>
 					<button onClick={() => setIsOpen(false)}>
@@ -76,13 +79,13 @@ export default function Cart({ isOpen, setIsOpen }) {
 						</Link>
 					</div>
 				</div>
-			</CartContainer>
+			</CartWrapper>
 		);
 	}
 
 	// Logged in → show cart
 	return (
-		<CartContainer>
+		<CartWrapper>
 			<div className="flex justify-between items-center p-4 border-b border-gray-200">
 				<h2 className="font-bold text-2xl">السلة</h2>
 				<button onClick={() => setIsOpen(false)}>
@@ -123,11 +126,13 @@ export default function Cart({ isOpen, setIsOpen }) {
 						<span>الإجمالي الكلي</span>
 						<span>{cart.grandTotal} جنيه</span>
 					</div>
-					<button className="w-full mt-3 bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition">
-						الدفع
-					</button>
+					<Link to="/paying">
+						<button onClick={()=>setIsOpen(!isOpen)} className="w-full mt-3 bg-yellow-500 text-white py-2 rounded-lg hover:bg-yellow-600 transition">
+							الدفع
+						</button>
+					</Link>
 				</div>
 			)}
-		</CartContainer>
+		</CartWrapper>
 	);
 }

@@ -71,6 +71,7 @@ export default function ProductCard({ product }) {
 	const rating = product?.ratingAverage ?? 0;
 	const maxStars = 5;
 	const ratingCount = product?.ratingCount ?? 0;
+	// console.log(product)
 	return (
 		<div className="bg-white rounded-2xl shadow-md overflow-hidden relative">
 			{/* Image */}
@@ -123,7 +124,7 @@ export default function ProductCard({ product }) {
 				{/* Prices */}
 				<div className="flex items-center gap-2">
 					<span className="text-[#FFC222] font-semibold">
-						{product.price} جنيه مصري
+						{product?.price} جنيه مصري
 					</span>
 					{product.oldPrice && (
 						<span className="text-gray-400 text-sm line-through">

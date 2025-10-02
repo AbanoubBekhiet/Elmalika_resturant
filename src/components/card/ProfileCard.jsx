@@ -42,17 +42,14 @@ function ProfileCard({
 				},
 			});
 
-			// Show success message
 			toast.success("تم إزالة العنصر من المفضلة بنجاح");
 
-			// Call parent component's onRemove function to update the list
 			if (onRemove) {
 				onRemove(id);
 			}
 		} catch (error) {
 			console.error("Error removing favorite:", error);
 
-			// Show error message based on error type
 			if (error.response?.status === 401) {
 				toast.error("يجب تسجيل الدخول مرة أخرى");
 			} else if (error.response?.status === 404) {
@@ -66,19 +63,19 @@ function ProfileCard({
 	};
 
 	return (
-		<div className="flex items-center gap-4 rounded-lg p-4 shadow-xl shadow-gray-100 hover:shadow-gray-200 transition-shadow">
+		<div className="flex flex-row items-center gap-4 rounded-lg p-4 shadow-xl shadow-gray-100 hover:shadow-gray-200 transition-shadow w-full">
 			{qty ? (
-				// For orders tab - no delete button
-				<div className="flex-1 text-right justify-items-end">
-					<h3 className="font-semibold">{name}</h3>
-					<p className="text-gray-500 text-sm">{desc}</p>
-					<div className="flex justify-between mt-2">
-						<span className="text-gray-500 mr-40">الكمية: {qty}</span>
+				<div className="flex-1 text-right w-full">
+					<h3 className="font-semibold text-base sm:text-lg">{name}</h3>
+					<p className="text-gray-500 text-xs sm:text-sm lg:text-base break-words line-clamp-2">
+						{desc}
+					</p>
+					<div className="flex justify-between mt-2 text-sm sm:text-base">
+						<span className="text-gray-500">الكمية: {qty}</span>
 						<span className="font-bold">{price} جنيه</span>
 					</div>
 				</div>
 			) : (
-				// For favorites tab - with delete button
 				<>
 					<button
 						className={`text-gray-400 hover:text-red-500 transition-colors ${
@@ -126,12 +123,18 @@ function ProfileCard({
 							</svg>
 						)}
 					</button>
-					<div className="flex-1 text-right justify-items-end">
-						<NavLink to={`/product/${id}/${categoryId}`}>
-							<h3 className="font-semibold">{name}</h3>
-							<p className="text-gray-500 text-sm">{desc}</p>
+					<div className="flex-1 text-right w-full">
+						<NavLink to={`/product/${id}/${categoryId}`} className="block">
+							<h3 className="font-semibold text-base sm:text-lg lg:text-xl break-words line-clamp-2">
+								{name}
+							</h3>
+							<p className="text-gray-500 text-xs sm:text-sm lg:text-base mt-1 whitespace-normal break-words">
+								{desc}
+							</p>
 							<div className="mt-2">
-								<span className="font-bold">{price} جنيه</span>
+								<span className="font-bold text-sm sm:text-base lg:text-lg">
+									{price} جنيه
+								</span>
 							</div>
 						</NavLink>
 					</div>
@@ -142,7 +145,7 @@ function ProfileCard({
 				src={img ? `${API_BASE_URL}/${img}` : image}
 				alt={name}
 				loading="lazy"
-				className="w-24 h-20 rounded-lg object-cover"
+				className="w-24 h-20 sm:w-28 sm:h-24 lg:w-36 lg:h-32 rounded-lg object-cover flex-shrink-0"
 			/>
 		</div>
 	);

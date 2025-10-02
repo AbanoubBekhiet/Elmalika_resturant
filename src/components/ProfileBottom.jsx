@@ -43,7 +43,6 @@ export default function ProfileBottom({ tap }) {
 				} else if (res.data?.items && Array.isArray(res.data.items)) {
 					favoritesData = res.data.items;
 				}
-
 				setFavourits(favoritesData);
 			} catch (error) {
 				console.error("Error fetching favorites:", error);
@@ -81,7 +80,7 @@ export default function ProfileBottom({ tap }) {
 				} else if (res.data?.orders && Array.isArray(res.data.orders)) {
 					ordersData = res.data.orders;
 				}
-
+				console.log(res.data);
 				setOrders(ordersData);
 
 				if (ordersData.length > 0) {
@@ -175,7 +174,7 @@ export default function ProfileBottom({ tap }) {
 	return (
 		<>
 			{tap === 1 ? (
-				<div className="flex gap-4 p-6 bg-gray-100 flex-col">
+				<div className="flex flex-col gap-4 p-4 sm:p-6 bg-gray-100">
 					<p className="text-2xl text-end">الطلبات السابقة</p>
 
 					{ordersLoading ? (
@@ -185,20 +184,16 @@ export default function ProfileBottom({ tap }) {
 							<p className="text-gray-500">لا توجد طلبات سابقة</p>
 						</div>
 					) : (
-						<div className="flex gap-4">
-							{/* Left Section - Order Details */}
-							<div className="flex-1 bg-white rounded-lg shadow p-6">
+						<div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
+							{/* left Section - Order Details */}
+							<div className="lg:col-span-2 bg-white rounded-lg shadow p-4 sm:p-6">
 								{selectedOrder ? (
 									<>
-										<div className="flex justify-between items-center mb-6">
+										<div className="flex flex-col sm:flex-row sm:justify-between sm:items-center mb-6 gap-2">
 											<h2 className="text-xl font-semibold">تفاصيل الطلب</h2>
-											<div className="text-gray-600">
-												<p>
-													#{selectedOrder?.merchantOrderId || selectedOrder?.id}
-												</p>
-												<p className="text-sm">
-													{formatDate(selectedOrder?.createdAt)}
-												</p>
+											<div className="text-gray-600 text-sm sm:text-base text-left sm:text-right">
+												<p>#{selectedOrder?.id}</p>
+												<p>{formatDate(selectedOrder?.createdAt)}</p>
 											</div>
 										</div>
 
@@ -213,15 +208,15 @@ export default function ProfileBottom({ tap }) {
 														item?.description ||
 														""
 													}
-													price={item?.product?.price}
+													price={item?.size?.price}
 													qty={item?.quantity}
 													img={item?.product?.imageUrl || defaultImage}
 												/>
 											))}
 										</div>
 
-										<div className="mt-6 border-t pt-4">
-											<div className="flex justify-between items-center">
+										<div className="mt-6 border-t pt-4 space-y-2">
+											<div className="flex justify-between text-sm sm:text-base">
 												<span className="text-gray-600">المجموع الفرعي:</span>
 												<span>
 													{(selectedOrder?.totalPrice || 0) -
@@ -229,23 +224,21 @@ export default function ProfileBottom({ tap }) {
 													جنيه
 												</span>
 											</div>
-											{(selectedOrder?.deliveryFee || 0) > 0 && (
-												<div className="flex justify-between items-center mt-2">
+											{selectedOrder?.deliveryFee > 0 && (
+												<div className="flex justify-between text-sm sm:text-base">
 													<span className="text-gray-600">رسوم التوصيل:</span>
 													<span>{selectedOrder?.deliveryFee} جنيه</span>
 												</div>
 											)}
-											<div className="flex justify-between items-center mt-2 text-xl font-bold">
+											<div className="flex justify-between text-base sm:text-lg font-bold">
 												<span>المجموع الكلي:</span>
 												<span>{selectedOrder?.totalPrice || 0} جنيه</span>
 											</div>
 										</div>
 
 										{selectedOrder?.deliveryInstructions && (
-											<div className="mt-4 p-3 bg-gray-50 rounded">
-												<p className="text-sm text-gray-600">
-													ملاحظات التوصيل:
-												</p>
+											<div className="mt-4 p-3 bg-gray-50 rounded text-sm sm:text-base">
+												<p className="text-gray-600">ملاحظات التوصيل:</p>
 												<p className="mt-1">
 													{selectedOrder?.deliveryInstructions}
 												</p>
@@ -258,10 +251,11 @@ export default function ProfileBottom({ tap }) {
 									</div>
 								)}
 							</div>
-
-							{/* Right Section - Orders List */}
-							<div className="w-80 bg-white rounded-lg shadow p-6">
-								<h2 className="text-xl font-semibold mb-4">طلباتك</h2>
+							{/* right Section - Orders List */}
+							<div className="bg-white rounded-lg shadow p-4 sm:p-6">
+								<h2 className="text-lg sm:text-xl font-semibold mb-4">
+									طلباتك
+								</h2>
 								<div className="space-y-3">
 									{currentOrders.map((order) => (
 										<div
@@ -273,24 +267,22 @@ export default function ProfileBottom({ tap }) {
 										>
 											<div className="text-right">
 												<p
-													className={`font-medium px-2 py-1 rounded text-sm ${getStatusColor(
+													className={`font-medium px-2 py-1 rounded text-xs sm:text-sm ${getStatusColor(
 														order?.status
 													)}`}
 												>
 													{order?.status}
 												</p>
-												<p className="text-gray-500 text-sm mt-1">
+												<p className="text-gray-500 text-xs sm:text-sm mt-1">
 													{formatDate(order?.createdAt)}
 												</p>
 											</div>
-											<div className="text-left">
-												<p className="font-bold">
-													#{order?.merchantOrderId || order?.id}
-												</p>
+											<div className="text-left text-xs sm:text-sm">
+												<p className="font-bold">#{order?.id}</p>
 												<p className="text-gray-500">
 													{order?.totalPrice} جنيه
 												</p>
-												<p className="text-xs text-gray-400">
+												<p className="text-gray-400">
 													{order?.orderItems?.length || 0} عناصر
 												</p>
 											</div>
@@ -298,27 +290,25 @@ export default function ProfileBottom({ tap }) {
 									))}
 								</div>
 
-								{/* Pagination - Orders */}
+								{/* Pagination */}
 								{ordersNumOfPages > 1 && (
 									<div className="flex justify-center items-center gap-4 mt-6">
 										<button
-											className={`px-4 py-2 rounded-full ${
+											className={`px-4 py-2 rounded-full text-sm sm:text-base ${
 												ordersCurrentPage === 1
 													? "bg-gray-200 text-gray-500 cursor-not-allowed"
 													: "bg-[#FFC222] text-white hover:bg-[#e0a800]"
 											}`}
 											disabled={ordersCurrentPage === 1}
 											onClick={() =>
-												setOrdersCurrentPage((prev) =>
-												 Math.max(prev - 1, 1)
-												)
+												setOrdersCurrentPage((prev) => Math.max(prev - 1, 1))
 											}
 										>
 											السابق
 										</button>
 
 										<button
-											className={`px-4 py-2 rounded-full ${
+											className={`px-4 py-2 rounded-full text-sm sm:text-base ${
 												ordersCurrentPage === ordersNumOfPages
 													? "bg-gray-200 text-gray-500 cursor-not-allowed"
 													: "bg-[#FFC222] text-white hover:bg-[#e0a800]"
@@ -326,7 +316,7 @@ export default function ProfileBottom({ tap }) {
 											disabled={ordersCurrentPage === ordersNumOfPages}
 											onClick={() =>
 												setOrdersCurrentPage((prev) =>
-												 Math.min(prev + 1, ordersNumOfPages)
+													Math.min(prev + 1, ordersNumOfPages)
 												)
 											}
 										>
@@ -390,9 +380,7 @@ export default function ProfileBottom({ tap }) {
 											}`}
 											disabled={currentPage === numOfPages}
 											onClick={() =>
-												setCurrentPage((prev) =>
-													Math.min(prev + 1, numOfPages)
-												)
+												setCurrentPage((prev) => Math.min(prev + 1, numOfPages))
 											}
 										>
 											التالي

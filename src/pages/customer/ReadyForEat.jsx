@@ -88,15 +88,20 @@ export default function ReadyForCook() {
 								جميع الوجبات الجاهزة للأكل في مطعمنا
 							</p>
 						</div>
-						<div className="flex items-center gap-2">
+						<div className="flex items-center w-full max-w-full sm:max-w-lg gap-2">
 							<input
 								type="search"
 								placeholder="ابحث عن طعام ...."
 								value={searchTerm}
 								onChange={(e) => setSearchTerm(e.target.value)}
-								className="text-lg p-2 rounded-2xl border border-gray-300 focus:outline-none"
+								className="w-full flex-1 text-base sm:text-lg p-2 sm:p-3 rounded-2xl border border-gray-300 focus:outline-none focus:ring-2 focus:ring-yellow-400"
 							/>
-							<FiSearch size={18} />
+							<button
+								type="button"
+								className="p-2 sm:p-3 rounded-2xl bg-yellow-400 hover:bg-yellow-500 text-white flex items-center justify-center flex-shrink-0"
+							>
+								<FiSearch size={20} />
+							</button>
 						</div>
 					</div>
 

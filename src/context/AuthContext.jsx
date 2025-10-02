@@ -71,7 +71,6 @@ export const UserProvider = ({ children }) => {
       setAccessToken(null);
     } catch (err) {
       console.error("Logout failed:", err);
-      // Even if logout fails, clear local user state
       setUser(null);
       setAccessToken(null);
     }

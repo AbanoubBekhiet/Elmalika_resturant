@@ -21,8 +21,6 @@ export default function Offer() {
 
 				if (!res || !res.data) throw new Error("failed to fetch product");
 				let data = res.data;
-
-				// If it's an array → take the last element
 				if (Array.isArray(data)) {
 					if (data.length > 0) {
 						setProduct(data[data.length - 1]);
@@ -37,7 +35,7 @@ export default function Offer() {
 				setLoading(false);
 			}
 		};
-
+		
 		fetchProduct();
 	}, []);
 

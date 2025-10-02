@@ -7,28 +7,27 @@ import readyforcook from "../../assets/readyforcook.png";
 import todayeat from "../../assets/todayeat.png";
 import chefImg from "../../assets/chef.png";
 const categories = [
-  {
-	id:1,
-    name: "جاهز للاكل",
-    imageUrl:readyforeat,
-	path:"ready-to-eat"
-},
-{
-	id:2,
-	name: "جاهز للطبخ",
-    imageUrl: readyforcook,
-	path:"ready-to-cook"
-},
-{
-	id:3,
-	name: "طبق اليوم",
-    imageUrl: todayeat,
-	path:"dish-of-the-day"
-  }
+	{
+		id: 1,
+		name: "جاهز للاكل",
+		imageUrl: readyforeat,
+		path: "ready-to-eat",
+	},
+	{
+		id: 2,
+		name: "جاهز للطبخ",
+		imageUrl: readyforcook,
+		path: "ready-to-cook",
+	},
+	{
+		id: 3,
+		name: "طبق اليوم",
+		imageUrl: todayeat,
+		path: "dish-of-the-day",
+	},
 ];
 
 export default function CategoriesSection() {
-
 	return (
 		<section dir="rtl" className="container mx-auto px-[50px]">
 			{/* أعلى الصفحة */}
@@ -67,25 +66,24 @@ export default function CategoriesSection() {
 
 			{/* شبكة الكروت */}
 			<div className="grid sm:grid-cols-2 lg:grid-cols-3 gap-6 justify-center justify-items-center min-h-[300px]">
-{				(
-					categories.map((cat, idx) => (
-						<Link
-							key={cat.id}
-							to={`/${cat.path}`}
-							className={`flex flex-col ${idx === 1 ? "lg:mt-16" : ""}`}
-						>
-							<div className="h-[320px] w-[300px] md:h-[380px] md:w-[320px] lg:h-[525px] lg:w-[384px] rounded-2xl shadow hover:scale-105 transition-transform duration-300 overflow-hidden bg-white">
-								<img
-									src={cat.imageUrl }
-									alt={cat.name}
-									className="w-full h-full object-cover"
-									loading="lazy"
-								/>
-							</div>
-							<h3 className="text-lg font-bold mt-3 text-center">{cat.name}</h3>
-						</Link>
-					))
-				)}
+				{categories.map((cat, idx) => (
+					<Link
+						key={cat.id}
+						to={`/${cat.path}`}
+						className={`flex flex-col ${idx === 1 ? "lg:mt-16" : ""}`}
+					>
+						<div className="w-full max-w-sm md:max-w-md lg:max-w-lg rounded-2xl shadow hover:scale-105 transition-transform duration-300 overflow-hidden bg-white">
+							<img
+								src={cat.imageUrl}
+								alt={cat.name}
+								className="w-full h-auto object-cover"
+								loading="lazy"
+							/>
+						</div>
+
+						<h3 className="text-lg font-bold mt-3 text-center">{cat.name}</h3>
+					</Link>
+				))}
 			</div>
 		</section>
 	);

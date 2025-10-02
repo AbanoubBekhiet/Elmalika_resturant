@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from "react";
+// src/pages/ProductDetails.jsx
+import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
 import { AiFillStar } from "react-icons/ai";
 import axios from "axios";
@@ -7,7 +8,8 @@ import { FaShare } from "react-icons/fa";
 import defaultImage from "./../assets/product.jpg";
 import SimilarProducts from "./SimilarProducts.jsx";
 import Rating from "./Rating.jsx";
-import { ToastContainer } from "react-toastify";
+import { ToastContainer, toast } from "react-toastify";
+import { CartContext } from "../context/CartContext"; // ✅ استدعاء الكونتكست
 
 // 🔹 baseURL هنا
 const API_BASE_URL = "https://api.queen.kitchen";
@@ -17,10 +19,14 @@ export default function ProductDetails() {
 	const [product, setProduct] = useState(null);
 	const [similarProducts, setsimilarProducts] = useState([]);
 	const [qty, setQty] = useState(1);
-	const [notes, setNotes] = useState("");
-	const [ItemSize, setItemSize] = useState("وسط");
+	// const [notes, setNotes] = useState("");
+	const [ItemSize, setItemSize] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [adds, setAdds] = useState([]);
+
+	// ✅ جلب دالة addToCart من الكونتكست
+	const { addToCart, isAuthenticated } = useContext(CartContext);
+
 	// جلب المنتج
 	useEffect(() => {
 		setLoading(true);
@@ -32,6 +38,11 @@ export default function ProductDetails() {
 			.then((res) => {
 				setProduct(res?.data || null);
 				console.log(res.data);
+
+				// ✅ اضبط الحجم الافتراضي أول ما المنتج يتجاب
+				if (res?.data?.sizes?.length > 0) {
+					setItemSize(res.data.sizes[0]);
+				}
 			})
 			.catch((error) => {
 				console.log(error);
@@ -70,12 +81,33 @@ export default function ProductDetails() {
 
 	function handleAddAddition(add) {
 		setAdds((prevAdds) => {
-			if (prevAdds.includes(add)) {
-				return prevAdds.filter((a) => a !== add);
+			if (prevAdds.includes(add.id)) {
+				return prevAdds.filter((a) => a !== add.id);
 			} else {
-				return [...prevAdds, add];
+				return [...prevAdds, add.id];
 			}
 		});
+	}
+
+	// ✅ التحقق والإضافة للعربة
+	function handleAddToCart() {
+		if (!isAuthenticated) {
+			toast.error("يجب تسجيل الدخول أولاً لإضافة منتجات إلى السلة");
+			return;
+		}
+
+		if (!ItemSize) {
+			toast.error("الرجاء اختيار الحجم");
+			return;
+		}
+
+		if (qty < 1) {
+			toast.error("الكمية يجب أن تكون 1 على الأقل");
+			return;
+		}
+
+		addToCart(product, ItemSize.id, qty, adds);
+		toast.success("تمت إضافة المنتج إلى السلة بنجاح 🎉");
 	}
 
 	return (
@@ -106,12 +138,6 @@ export default function ProductDetails() {
 							<div>
 								<div className="relative">
 									<div className="absolute  top-1/4 -left-20 transform -translate-y-1/2 flex flex-col space-y-3 z-10">
-										{/* <button className="w-10 h-10 bg-white rounded-lg shadow flex items-center justify-center">
-											<IoChevronBack size={20} />
-										</button>
-										<button className="w-10 h-10 bg-white rounded-lg shadow flex items-center justify-center">
-											<IoChevronForward size={20} />
-										</button> */}
 										<div className="bg-gray-200 p-2 rounded-lg">
 											<FaShare size={30} className="text-yellow-500 " />
 										</div>
@@ -146,11 +172,10 @@ export default function ProductDetails() {
 								<div className="flex justify-between w-5xs border-b border-dashed border-gray-400 p-5">
 									<div className="flex items-baseline space-x-4">
 										<span className="text-2xl font-bold">
-											{product?.price ? `${product.price} جنيه` : ""}
+											{ItemSize?.price ? `${ItemSize.price} جنية` : ""}
 										</span>
 									</div>
 									<div className="flex items-center space-x-3">
-										{/* النجوم */}
 										<div className="flex text-yellow-500">
 											{Array.from({ length: 5 }).map((_, i) => (
 												<AiFillStar
@@ -163,8 +188,6 @@ export default function ProductDetails() {
 												/>
 											))}
 										</div>
-
-										{/* عدد التقييمات */}
 										<span className="ml-2 text-sm text-gray-600">
 											{product?.ratingCount > 0
 												? `(${product.ratingCount} تقييم)`
@@ -186,17 +209,17 @@ export default function ProductDetails() {
 										الأحجام:
 									</label>
 									<div className="flex space-x-2">
-										{["صغير", "وسط", "كبير"].map((size) => (
+										{product?.sizes.map((size) => (
 											<button
 												onClick={() => setItemSize(size)}
-												key={size}
+												key={size?.id}
 												className={`px-4 py-2 rounded-full border ${
-													size === ItemSize
+													ItemSize?.id === size?.id
 														? "border-[#FFC222] text-[#FFC222]"
 														: "border-gray-300 text-gray-700"
 												}`}
 											>
-												{size}
+												{size?.name}({size?.price})
 											</button>
 										))}
 									</div>
@@ -208,17 +231,17 @@ export default function ProductDetails() {
 										الإضافات:
 									</label>
 									<div className="flex space-x-2">
-										{["بطاطس", "صلصات", "كولا"].map((extra) => (
+										{product?.addons?.map((extra) => (
 											<button
 												onClick={() => handleAddAddition(extra)}
-												key={extra}
+												key={extra.id}
 												className={`px-4 py-2 rounded-full border ${
-													adds.includes(extra)
+													adds.includes(extra.id)
 														? "border-[#FFC222] text-[#FFC222]"
 														: "border-gray-300 text-gray-700"
 												}`}
 											>
-												{extra}
+												{extra.name}({extra.price})
 											</button>
 										))}
 									</div>
@@ -247,7 +270,7 @@ export default function ProductDetails() {
 								</div>
 
 								{/* Notes */}
-								<div className="space-y-2">
+								{/* <div className="space-y-2">
 									<label className="block text-sm font-medium text-gray-700">
 										ملاحظات:
 									</label>
@@ -258,11 +281,14 @@ export default function ProductDetails() {
 										className="w-full border border-gray-300 rounded-lg p-3 text-sm placeholder-gray-400"
 										placeholder="أضف ملاحظاتك على الطلب، مثال: بدون زيتون..."
 									/>
-								</div>
+								</div> */}
 
 								{/* Action Buttons */}
 								<div className="flex space-x-4">
-									<button className="flex-1 border border-[#FFC222] text-[#FFC222] py-3 rounded-full font-semibold hover:bg-[#FFF5E1] transition">
+									<button
+										onClick={handleAddToCart}
+										className="flex-1 border border-[#FFC222] text-[#FFC222] py-3 rounded-full font-semibold hover:bg-[#FFF5E1] transition"
+									>
 										إضافة إلى السلة
 									</button>
 								</div>

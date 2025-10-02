@@ -255,7 +255,7 @@ function ProfileHead({ setTap, tap }) {
 						</div>
 
 						{/* Profile Image + Name */}
-						<div className="flex flex-col w-28 sm:w-40 justify-center text-center">
+						<div className="flex flex-col w-28 sm:w-40 justify-center text-center mt-10">
 							<img
 								src={defaultPerson}
 								alt="defaultPerson"

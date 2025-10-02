@@ -24,6 +24,7 @@ import Options from "./pages/dashboard/Options";
 import ProtectedAdminLayout from "./layouts/ProtectedAdminLayout";
 import ProtectedUserLayout from "./layouts/ProtectedUserLayout";
 import { ToastContainer } from "react-toastify";
+import PaymentCallback from "./pages/customer/PaymentCallback";
 
 function App() {
 	return (
@@ -39,6 +40,7 @@ function App() {
 						<Route element={<ProtectedUserLayout />}>
 							<Route path="/profile" element={<Profile />} />
 							<Route path="/paying" element={<Paying />} />
+							<Route path="/paymob/callback" element={<PaymentCallback />} />
 						</Route>
 						<Route path="/" element={<Home />} />
 						<Route path="/ready-to-eat" element={<ReadyForEat />} />
