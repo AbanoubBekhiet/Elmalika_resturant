@@ -10,18 +10,7 @@ import {
 	Cell,
 } from "recharts";
 
-const NumberOfOrdersStatistics = ({data}) => {
-	// const data = [
-	// 	{ day: "الخميس", value: 60 },
-	// 	{ day: "الأربعاء", value: 220 },
-	// 	{ day: "الثلاثاء", value: 120 },
-	// 	{ day: "الاثنين", value: 230 },
-	// 	{ day: "الأحد", value: 160 },
-	// 	{ day: "السبت", value: 90 },
-	// 	{ day: "الجمعة", value: 70 },
-	// ];
-
-
+const NumberOfOrdersStatistics = ({ data }) => {
 	// Custom tooltip
 	const CustomTooltip = ({ active, payload }) => {
 		if (active && payload && payload.length) {
@@ -39,22 +28,6 @@ const NumberOfOrdersStatistics = ({data}) => {
 			{/* Header */}
 			<div className="flex justify-between items-center mb-6">
 				<h2 className="text-lg font-semibold text-gray-800">عدد الطلبات</h2>
-				<button className="text-blue-500 text-sm hover:underline flex items-center gap-1">
-					اسبوعي
-					<svg
-						className="w-4 h-4"
-						fill="none"
-						stroke="currentColor"
-						viewBox="0 0 24 24"
-					>
-						<path
-							strokeLinecap="round"
-							strokeLinejoin="round"
-							strokeWidth={2}
-							d="M19 9l-7 7-7-7"
-						/>
-					</svg>
-				</button>
 			</div>
 
 			{/* Chart */}

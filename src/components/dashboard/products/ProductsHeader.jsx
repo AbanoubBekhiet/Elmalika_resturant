@@ -12,11 +12,6 @@ const ProductsHeader = ({ tabs, activeTab, setActiveTab, searchTerm, setSearchTe
               + إضافة منتج
             </button>
           </NavLink>
-
-          <button className="border border-gray-200 rounded px-3 py-2 flex items-center gap-2 text-sm hover:bg-gray-50">
-            <FaFilter />
-            تصفية
-          </button>
         </div>
 
         <div className="flex flex-row-reverse items-center border border-gray-200 rounded-lg px-3 py-2 bg-gray-50 w-full sm:max-w-xs md:max-w-md lg:max-w-lg">

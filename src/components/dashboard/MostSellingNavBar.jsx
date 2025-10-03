@@ -14,7 +14,6 @@ const MostSellingNavBar = () => {
 			try {
 				const res = await axios.get(API_URL);
 				setItems(res.data || []);
-        console.log(res.data)
 			} catch (err) {
 				console.error("Error fetching best sellers:", err);
 			}
@@ -49,11 +48,11 @@ const MostSellingNavBar = () => {
 			{currentItems.length > 0 ? (
 				currentItems.map((item, index) => (
 					<MostSellingCard
-						key={item.productId || index}
+						key={item.id || index}
 						image={item.imageUrl}
 						title={item.name}
-						price={item.revenue}
-						oldPrice={item.revenue+40}
+						price={item.price}
+						oldPrice={item.price+40}
 						sold={item.qty}
 					/>
 				))

@@ -8,7 +8,7 @@ const PageHeader = ({
 	inputPlaceholder,
 	setShowForm,
 	searchTerm,
-	setSearchTerm, 
+	setSearchTerm,
 }) => {
 	// const [selectedTab, setSelectedTab] = useState("all");
 
@@ -23,11 +23,6 @@ const PageHeader = ({
 						className="bg-yellow-400 hover:bg-yellow-500 text-white px-4 py-2 rounded font-bold flex items-center gap-2"
 					>
 						+ {buttonText}
-					</button>
-
-					<button className="border border-gray-200 rounded px-3 py-2 flex items-center gap-2 text-sm hover:bg-gray-50">
-						<FaFilter />
-						تصفية
 					</button>
 				</div>
 
