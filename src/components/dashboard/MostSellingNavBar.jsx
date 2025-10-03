@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import MostSellingCard from "./MostSellingCard";
 import axios from "axios";
+import { HiOutlineArrowRight } from "react-icons/hi";
+import { HiMiniArrowLeft } from "react-icons/hi2";
 
 const API_URL = "https://api.queen.kitchen/admin/stats/best-sellers";
 
 const MostSellingNavBar = () => {
 	const [items, setItems] = useState([]);
 	const [currentPage, setCurrentPage] = useState(0);
-	const itemsPerPage = 3;
+	const itemsPerPage = 4;
 
 	useEffect(() => {
 		const fetchBestSellers = async () => {
@@ -52,7 +54,7 @@ const MostSellingNavBar = () => {
 						image={item.imageUrl}
 						title={item.name}
 						price={item.price}
-						oldPrice={item.price+40}
+						oldPrice={item.price + 40}
 						sold={item.qty}
 					/>
 				))
@@ -65,24 +67,24 @@ const MostSellingNavBar = () => {
 				<button
 					onClick={handlePrev}
 					disabled={currentPage === 0}
-					className={`px-3 py-1 rounded-md ${
+					className={`p-3 rounded-full ${
 						currentPage === 0
 							? "bg-gray-200 text-gray-500 cursor-not-allowed"
 							: "bg-yellow-400 text-white hover:bg-yellow-500"
 					}`}
 				>
-					السابق
+					<HiMiniArrowLeft />
 				</button>
 				<button
 					onClick={handleNext}
 					disabled={(currentPage + 1) * itemsPerPage >= items.length}
-					className={`px-3 py-1 rounded-md ${
+					className={`p-3 rounded-full ${
 						(currentPage + 1) * itemsPerPage >= items.length
 							? "bg-gray-200 text-gray-500 cursor-not-allowed"
 							: "bg-yellow-400 text-white hover:bg-yellow-500"
 					}`}
 				>
-					التالي
+					<HiOutlineArrowRight />
 				</button>
 			</div>
 		</div>

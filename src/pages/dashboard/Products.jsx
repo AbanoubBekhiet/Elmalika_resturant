@@ -88,11 +88,11 @@ function Products() {
 				setSearchTerm={setSearchTerm}
 			/>
 			<ProductGrid products={currentProducts} />
-				<Pagination
-					currentPage={currentPage}
-					setCurrentPage={handlePageChange}
-					totalPages={totalPages}
-				/>
+			<Pagination
+				currentPage={currentPage}
+				setCurrentPage={handlePageChange}
+				totalPages={totalPages}
+			/>
 		</>
 	);
 }

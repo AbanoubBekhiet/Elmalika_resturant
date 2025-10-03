@@ -5,6 +5,8 @@ import axios from "axios";
 import Loader from "../../loaders/Loader.jsx";
 import ProductCard from "./../../components/card/Card";
 import { ToastContainer } from "react-toastify";
+import { HiOutlineArrowRight } from "react-icons/hi";
+import { HiMiniArrowLeft } from "react-icons/hi2";
 
 const API_BASE_URL = "https://api.queen.kitchen";
 
@@ -24,9 +26,9 @@ export default function ReadyForCook() {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(false);
 
-	// pagination states
 	const [currentPage, setCurrentPage] = useState(1);
-	const itemsPerPage = 12; // ✅ مناسب للشبكة
+	const itemsPerPage = 12;
+	const totalPages = Math.ceil(products.length / itemsPerPage);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -139,35 +141,31 @@ export default function ReadyForCook() {
 
 					{/* Pagination (السابق / التالي) */}
 					{numOfPages > 1 && (
-						<div className="flex items-center justify-center gap-4 mt-8">
+						<div className="flex items-center justify-center space-x-4 mt-8">
 							<button
-								className={`px-4 py-2 rounded-lg border ${
-									currentPage === 1
-										? "bg-gray-200 text-gray-400 cursor-not-allowed"
-										: "bg-yellow-200 hover:bg-yellow-500"
-								}`}
 								disabled={currentPage === 1}
+								className={`p-3 rounded-full ${
+									currentPage === 1
+										? "bg-gray-100 text-gray-400 cursor-not-allowed"
+										: "bg-yellow-400 text-gray-700 hover:bg-yellow-200 hover:text-black"
+								}`}
 								onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
 							>
-								السابق
+								<HiOutlineArrowRight />{" "}
 							</button>
 
-							<span className="text-sm text-gray-600">
-								صفحة {currentPage} من {numOfPages}
-							</span>
-
 							<button
-								className={`px-4 py-2 rounded-lg border ${
-									currentPage === numOfPages
+								disabled={currentPage === totalPages}
+								className={`p-3 rounded-full ${
+									currentPage === totalPages
 										? "bg-gray-200 text-gray-400 cursor-not-allowed"
-										: "bg-yellow-200 hover:bg-yellow-500"
+										: "bg-yellow-400 text-gray-700 hover:bg-yellow-200 hover:text-black"
 								}`}
-								disabled={currentPage === numOfPages}
 								onClick={() =>
 									setCurrentPage((prev) => Math.min(prev + 1, numOfPages))
 								}
 							>
-								التالي
+								<HiMiniArrowLeft />{" "}
 							</button>
 						</div>
 					)}

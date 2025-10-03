@@ -6,6 +6,8 @@ import axios from "axios";
 import Loader from "../../loaders/Loader.jsx";
 import ProductCard from "../../components/card/Card.jsx";
 import { ToastContainer } from "react-toastify";
+import { HiOutlineArrowRight } from "react-icons/hi";
+import { HiMiniArrowLeft } from "react-icons/hi2";
 
 const API_BASE_URL = "https://api.queen.kitchen";
 
@@ -27,10 +29,11 @@ export default function ReadyForCook() {
 
 	// ✅ frontend pagination states
 	const [currentPage, setCurrentPage] = useState(1);
-	const itemsPerPage = 20;
+	const itemsPerPage = 12;
 
 	// ✅ search state
 	const [searchQuery, setSearchQuery] = useState("");
+	const totalPages = Math.ceil(products.length / itemsPerPage);
 
 	useEffect(() => {
 		const fetchProducts = async () => {
@@ -146,25 +149,29 @@ export default function ReadyForCook() {
 					{numOfPages > 1 && (
 						<div className="flex items-center justify-center space-x-4 mt-8">
 							<button
-								className="p-3 rounded-full bg-white shadow hover:bg-gray-100 disabled:opacity-50"
 								disabled={currentPage === 1}
+								className={`p-3 rounded-full ${
+									currentPage === 1
+										? "bg-gray-100 text-gray-400 cursor-not-allowed"
+										: "bg-yellow-400 text-gray-700 hover:bg-yellow-200 hover:text-black"
+								}`}
 								onClick={() => setCurrentPage((prev) => Math.max(prev - 1, 1))}
 							>
-								<IoChevronForward size={20} />
+								<HiOutlineArrowRight />{" "}
 							</button>
 
-							<span className="text-gray-600">
-								الصفحة {currentPage} من {numOfPages}
-							</span>
-
 							<button
-								className="p-3 rounded-full bg-white shadow hover:bg-gray-100 disabled:opacity-50"
-								disabled={currentPage === numOfPages}
+								disabled={currentPage === totalPages}
+								className={`p-3 rounded-full ${
+									currentPage === totalPages
+										? "bg-gray-200 text-gray-400 cursor-not-allowed"
+										: "bg-yellow-400 text-gray-700 hover:bg-yellow-200 hover:text-black"
+								}`}
 								onClick={() =>
 									setCurrentPage((prev) => Math.min(prev + 1, numOfPages))
 								}
 							>
-								<IoChevronBack size={20} />
+								<HiMiniArrowLeft />{" "}
 							</button>
 						</div>
 					)}

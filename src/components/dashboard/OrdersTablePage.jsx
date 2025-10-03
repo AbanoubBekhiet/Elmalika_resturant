@@ -105,7 +105,6 @@ const OrdersTablePage = () => {
 	return (
 		<div
 			className="p-6 bg-gray-50 min-h-screen shadow-2xl m-6 rounded-2xl"
-			dir="rtl"
 		>
 			{/* Header */}
 			<div className="flex justify-between items-center mb-4">
