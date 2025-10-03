@@ -47,10 +47,13 @@ const ReviewsSection = ({ reviews = [], loading = false }) => {
 	const displayedReviews = getDisplayedReviews();
 
 	return (
-		<div className="max-w-5xl mx-auto mt-16 p-5 font-sans bg-white rounded-2xl" dir="rtl">
+		<div
+			className="max-w-5xl mx-auto mt-16 p-5 font-sans bg-white rounded-2xl"
+			dir="rtl"
+		>
 			{/* Section Title */}
 			<div className="text-center mb-12">
-				<h2 className="text-4xl font-bold text-gray-800 inline-block pb-3 border-b-4 border-yellow-400">
+				<h2 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-800 inline-block pb-3 border-b-4 border-yellow-400">
 					تقييم العملاء
 				</h2>
 			</div>
@@ -66,35 +69,43 @@ const ReviewsSection = ({ reviews = [], loading = false }) => {
 						{/* Navigation Buttons */}
 						<button
 							onClick={prevSlide}
-							className="absolute right-0 top-1/2 transform -translate-y-1/2 -translate-x-8 z-10 bg-white hover:bg-gray-50 border border-gray-300 rounded-full w-12 h-12 flex items-center justify-center shadow-md transition-colors duration-200"
+							className="absolute right-0 top-1/2 transform -translate-y-1/2 -translate-x-4 sm:-translate-x-6 md:-translate-x-8 z-10 bg-white hover:bg-gray-50 border border-gray-300 rounded-full w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center shadow-md transition-colors duration-200"
 						>
-							<IoChevronForward className="w-6 h-6 text-gray-600" />
+							<IoChevronForward className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-gray-600" />
 						</button>
 
 						<button
 							onClick={nextSlide}
-							className="absolute left-0 top-1/2 transform -translate-y-1/2 translate-x-8 z-10 bg-white hover:bg-gray-50 border border-gray-300 rounded-full w-12 h-12 flex items-center justify-center shadow-md transition-colors duration-200"
+							className="absolute left-0 top-1/2 transform -translate-y-1/2 translate-x-4 sm:translate-x-6 md:translate-x-8 z-10 bg-white hover:bg-gray-50 border border-gray-300 rounded-full w-8 h-8 sm:w-10 sm:h-10 lg:w-12 lg:h-12 flex items-center justify-center shadow-md transition-colors duration-200"
 						>
-							<IoChevronBack className="w-6 h-6 text-gray-600" />
+							<IoChevronBack className="w-4 h-4 sm:w-5 sm:h-5 lg:w-6 lg:h-6 text-gray-600" />
 						</button>
 
-						{/* Three Reviews Container */}
-						<div className="flex items-end justify-center gap-6 px-16">
+						{/* Reviews Container */}
+						<div className="flex items-end justify-center gap-3 sm:gap-6 px-2 sm:px-6 md:px-16 w-full">
 							{displayedReviews.map((review, index) => {
 								const isCenter = review.position === "center";
-								const cardSize = isCenter ? "w-80 h-64" : "w-64 h-48";
-								const avatarSize = isCenter ? "w-16 h-16" : "w-12 h-12";
+								const cardSize = isCenter
+									? "flex-1 max-w-[90%] sm:max-w-sm md:max-w-md"
+									: "flex-1 max-w-[70%] sm:max-w-xs md:max-w-sm";
+								const avatarSize = isCenter
+									? "w-12 h-12 sm:w-16 sm:h-16"
+									: "w-10 h-10 sm:w-12 sm:h-12";
 								const nameSize = isCenter
-									? "text-sm font-bold"
-									: "text-xs font-semibold";
-								const roleSize = "text-xs";
-								const commentSize = isCenter ? "text-sm" : "text-xs";
-								const starSize = isCenter ? "text-base" : "text-sm";
+									? "text-sm sm:text-base font-bold"
+									: "text-xs sm:text-sm font-semibold";
+								const roleSize = "text-xs sm:text-sm";
+								const commentSize = isCenter
+									? "text-xs sm:text-sm"
+									: "text-[10px] sm:text-xs";
+								const starSize = isCenter
+									? "text-sm sm:text-base"
+									: "text-xs sm:text-sm";
 
 								return (
 									<div
 										key={`${review.id}-${index}`}
-										className={`bg-white border-2 rounded-2xl p-6 shadow-lg transition-all duration-300 flex flex-col ${cardSize} ${
+										className={`bg-white border-2 rounded-2xl p-4 sm:p-6 shadow-lg transition-all duration-300 flex flex-col ${cardSize} ${
 											isCenter
 												? "border-yellow-400 shadow-xl"
 												: "border-gray-200"
@@ -133,14 +144,14 @@ const ReviewsSection = ({ reviews = [], loading = false }) => {
 					</div>
 
 					{/* Carousel Indicators */}
-					<div className="flex justify-center gap-3 mt-8">
+					<div className="flex justify-center gap-2 sm:gap-3 mt-6 sm:mt-8">
 						{reviews.map((_, index) => (
 							<button
 								key={index}
-								className={`w-3 h-3 rounded-full transition-all duration-200 ${
+								className={`h-2 sm:h-3 rounded-full transition-all duration-200 ${
 									index === currentSlide
-										? "bg-gray-800 w-8"
-										: "bg-gray-300 hover:bg-gray-400"
+										? "bg-gray-800 w-6 sm:w-8"
+										: "bg-gray-300 hover:bg-gray-400 w-2 sm:w-3"
 								}`}
 								onClick={() => setCurrentSlide(index)}
 							/>

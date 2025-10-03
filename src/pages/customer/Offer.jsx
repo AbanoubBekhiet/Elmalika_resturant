@@ -23,7 +23,7 @@ export default function Offer() {
 				let data = res.data;
 				if (Array.isArray(data)) {
 					if (data.length > 0) {
-						setProduct(data[data.length - 1]);
+						setProduct(data[0]);
 					}
 				} else if (typeof data === "object") {
 					setProduct(data);
