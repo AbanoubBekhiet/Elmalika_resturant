@@ -22,12 +22,10 @@ export default function ProductDetails() {
 	// const [notes, setNotes] = useState("");
 	const [ItemSize, setItemSize] = useState(null);
 	const [loading, setLoading] = useState(true);
-	const [adds, setAdds] = useState([]);
-
-	// ✅ جلب دالة addToCart من الكونتكست
+	const [addonIds, setAdds] = useState([]);
 	const { addToCart, isAuthenticated } = useContext(CartContext);
-
 	// جلب المنتج
+
 	useEffect(() => {
 		setLoading(true);
 		axios
@@ -78,7 +76,6 @@ export default function ProductDetails() {
 			isMounted2 = false;
 		};
 	}, [categoryId]);
-
 	function handleAddAddition(add) {
 		setAdds((prevAdds) => {
 			if (prevAdds.includes(add.id)) {
@@ -105,9 +102,10 @@ export default function ProductDetails() {
 			toast.error("الكمية يجب أن تكون 1 على الأقل");
 			return;
 		}
-
-		addToCart(product, ItemSize.id, qty, adds);
+		addToCart(product, ItemSize.id, qty, addonIds);
 		toast.success("تمت إضافة المنتج إلى السلة بنجاح 🎉");
+		setAdds([]);
+		setQty(1);
 	}
 
 	return (
@@ -236,7 +234,7 @@ export default function ProductDetails() {
 												onClick={() => handleAddAddition(extra)}
 												key={extra.id}
 												className={`px-4 py-2 rounded-full border ${
-													adds.includes(extra.id)
+													addonIds.includes(extra.id)
 														? "border-[#FFC222] text-[#FFC222]"
 														: "border-gray-300 text-gray-700"
 												}`}

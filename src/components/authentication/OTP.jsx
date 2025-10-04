@@ -2,9 +2,8 @@ import React from "react";
 import footerBG from "./../../assets/footerBG.jpg";
 import queen from "./../../assets/queen.jpeg";
 import { Link } from "react-router-dom";
-import { FaRegEnvelope } from "react-icons/fa";
 
-function Login() {
+function OTP() {
 	return (
 		<div
 			className="min-h-screen flex items-center justify-center bg-cover bg-center"
@@ -54,4 +53,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default OTP;

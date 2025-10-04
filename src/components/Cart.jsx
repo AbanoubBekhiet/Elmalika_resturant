@@ -7,7 +7,7 @@ import { Link, useLocation } from "react-router-dom";
 export default function Cart({ isOpen, setIsOpen }) {
 	const { cart, loading, isAuthenticated } = useContext(CartContext);
 	const location = useLocation();
-
+console.log(cart)
 	if (!isOpen) return null;
 
 	// Wrapper for overlay + cart panel

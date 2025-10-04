@@ -5,7 +5,7 @@ import { UserContext } from "../context/AuthContext";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "./../loaders/Loader.jsx";
-import defaultImage from "./../assets/product.jpg";
+import Pagination from "./dashboard/OrdersTablePage/Pagination.jsx";
 
 export default function ProfileBottom({ tap }) {
 	const [currentPage, setCurrentPage] = useState(1);
@@ -16,7 +16,6 @@ export default function ProfileBottom({ tap }) {
 	const [ordersLoading, setOrdersLoading] = useState(false);
 	const [ordersCurrentPage, setOrdersCurrentPage] = useState(1);
 	const { accessToken } = useContext(UserContext);
-
 	const API_BASE_URL = "https://api.queen.kitchen";
 
 	// Fetch favourites
@@ -80,7 +79,6 @@ export default function ProfileBottom({ tap }) {
 				} else if (res.data?.orders && Array.isArray(res.data.orders)) {
 					ordersData = res.data.orders;
 				}
-				console.log(res.data);
 				setOrders(ordersData);
 
 				if (ordersData.length > 0) {
@@ -210,7 +208,7 @@ export default function ProfileBottom({ tap }) {
 													}
 													price={item?.size?.price}
 													qty={item?.quantity}
-													img={item?.product?.imageUrl || defaultImage}
+													img={item?.product?.imageUrl }
 												/>
 											))}
 										</div>
@@ -290,39 +288,13 @@ export default function ProfileBottom({ tap }) {
 									))}
 								</div>
 
-								{/* Pagination */}
+								{/* Pagination ✅ */}
 								{ordersNumOfPages > 1 && (
-									<div className="flex justify-center items-center gap-4 mt-6">
-										<button
-											className={`px-4 py-2 rounded-full text-sm sm:text-base ${
-												ordersCurrentPage === 1
-													? "bg-gray-200 text-gray-500 cursor-not-allowed"
-													: "bg-[#FFC222] text-white hover:bg-[#e0a800]"
-											}`}
-											disabled={ordersCurrentPage === 1}
-											onClick={() =>
-												setOrdersCurrentPage((prev) => Math.max(prev - 1, 1))
-											}
-										>
-											السابق
-										</button>
-
-										<button
-											className={`px-4 py-2 rounded-full text-sm sm:text-base ${
-												ordersCurrentPage === ordersNumOfPages
-													? "bg-gray-200 text-gray-500 cursor-not-allowed"
-													: "bg-[#FFC222] text-white hover:bg-[#e0a800]"
-											}`}
-											disabled={ordersCurrentPage === ordersNumOfPages}
-											onClick={() =>
-												setOrdersCurrentPage((prev) =>
-													Math.min(prev + 1, ordersNumOfPages)
-												)
-											}
-										>
-											التالي
-										</button>
-									</div>
+									<Pagination
+										currentPage={ordersCurrentPage}
+										setCurrentPage={setOrdersCurrentPage}
+										totalPages={ordersNumOfPages}
+									/>
 								)}
 							</div>
 						</div>
@@ -355,37 +327,13 @@ export default function ProfileBottom({ tap }) {
 										/>
 									))}
 								</div>
-								{/* Pagination - Favourites */}
+								{/* Pagination ✅ */}
 								{numOfPages > 1 && (
-									<div className="flex justify-center items-center gap-4 mt-8">
-										<button
-											className={`px-4 py-2 rounded-full ${
-												currentPage === 1
-													? "bg-gray-200 text-gray-500 cursor-not-allowed"
-													: "bg-[#FFC222] text-white hover:bg-[#e0a800]"
-											}`}
-											disabled={currentPage === 1}
-											onClick={() =>
-												setCurrentPage((prev) => Math.max(prev - 1, 1))
-											}
-										>
-											السابق
-										</button>
-
-										<button
-											className={`px-4 py-2 rounded-full ${
-												currentPage === numOfPages
-													? "bg-gray-200 text-gray-500 cursor-not-allowed"
-													: "bg-[#FFC222] text-white hover:bg-[#e0a800]"
-											}`}
-											disabled={currentPage === numOfPages}
-											onClick={() =>
-												setCurrentPage((prev) => Math.min(prev + 1, numOfPages))
-											}
-										>
-											التالي
-										</button>
-									</div>
+									<Pagination
+										currentPage={currentPage}
+										setCurrentPage={setCurrentPage}
+										totalPages={numOfPages}
+									/>
 								)}
 							</>
 						)}

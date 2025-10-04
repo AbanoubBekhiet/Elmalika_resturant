@@ -23,8 +23,8 @@ export default function CheckoutPage() {
 	});
 	const navigate = useNavigate();
 	const { accessToken } = useContext(UserContext);
-	const { cart, clearCartLocally } = useContext(CartContext);
 	const [isLoading, setIsLoading] = useState(false);
+	const { cart, clearCartLocally } = useContext(CartContext);
 	// Fetch user data
 	useEffect(() => {
 		setIsLoading(true);
@@ -230,21 +230,33 @@ export default function CheckoutPage() {
 					<label className="block my-10">
 						اختر العنوان الافتراضي
 						<select
-							className="w-full border border-gray-300 rounded p-5 mt-3"
+							className="w-full border border-gray-300 rounded px-3 py-2 mt-3 text-sm sm:text-base"
 							value={selectedAddressId || ""}
 							onChange={async (e) =>
 								handleAddressChangeDropdown(e.target.value)
 							}
 						>
-							{userAddresses.map((addr) => (
-								<option key={addr.id} value={addr.id}>
-									{`${addr.isDefault ? "⭐ " : ""}الشارع:${
-										addr.street
-									} المبنى:${addr.building} الطابق:${addr.floor} الشقة:${
-										addr.apartment
-									} المدينة:${addr.city} ملاحظات:${addr.note}`}
-								</option>
-							))}
+							{userAddresses.map((addr) => {
+								const fullText = `${addr.isDefault ? "⭐ " : ""}الشارع:${
+									addr.street
+								} المبنى:${addr.building} الطابق:${addr.floor} الشقة:${
+									addr.apartment
+								} المدينة:${addr.city} ملاحظات:${addr.note}`;
+								const shortText =
+									fullText.length > 50
+										? fullText.substring(0, 50) + "..."
+										: fullText;
+
+								return (
+									<option
+										key={addr.id}
+										value={addr.id}
+										title={fullText} // هنا بيظهر النص الكامل Tooltip عند الـ hover
+									>
+										{shortText}
+									</option>
+								);
+							})}
 						</select>
 					</label>
 

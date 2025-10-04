@@ -1,5 +1,5 @@
 // src/pages/auth/Signup.jsx
-import React, { useEffect, useState, useContext } from "react";
+import React, {  useState, useContext } from "react";
 import footerBG from "./../../assets/footerBG.jpg";
 import queen from "./../../assets/queen.jpeg";
 import { Link, useNavigate, useLocation } from "react-router-dom";
@@ -10,35 +10,17 @@ import axios from "axios";
 
 function Signup() {
   const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
+    name: "",
     email: "",
     password: "",
+    confirmPassword: "",
     phone: "",
-    governorate: "",
-    city: "",
-    detailedAddress: "",
   });
   const [isLoading, setIsLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  const { user, setUser, loading } = useContext(UserContext);
+  const {  setUser, loading } = useContext(UserContext);
 
-  const from = location.state?.from?.pathname || null;
-
-  useEffect(() => {
-    if (!loading && user) {
-      if (from) {
-        navigate(from, { replace: true });
-      } else {
-        if (user.role === "ADMIN") {
-          navigate("/dashboard", { replace: true });
-        } else if (user.role === "USER") {
-          navigate("/", { replace: true });
-        }
-      }
-    }
-  }, [user, loading, from, navigate]);
 
   // Handle input changes
   const handleInputChange = (e) => {
@@ -51,16 +33,10 @@ function Signup() {
 
   // Form validation
   const validateForm = () => {
-    const { firstName, lastName, email, password, phone, governorate, city } =
-      formData;
+    const { name, email, password, confirmPassword, phone } = formData;
 
-    if (!firstName.trim()) {
-      toast.error("يرجى إدخال الاسم الأول");
-      return false;
-    }
-
-    if (!lastName.trim()) {
-      toast.error("يرجى إدخال الاسم الأخير");
+    if (!name.trim()) {
+      toast.error("يرجى إدخال الاسم");
       return false;
     }
 
@@ -84,6 +60,11 @@ function Signup() {
       return false;
     }
 
+    if (password !== confirmPassword) {
+      toast.error("كلمة المرور غير متطابقة");
+      return false;
+    }
+
     if (!phone.trim()) {
       toast.error("يرجى إدخال رقم الهاتف");
       return false;
@@ -91,16 +72,6 @@ function Signup() {
 
     if (!/^\d{10,11}$/.test(phone)) {
       toast.error("يرجى إدخال رقم هاتف صحيح");
-      return false;
-    }
-
-    if (!governorate.trim()) {
-      toast.error("يرجى إدخال المحافظة");
-      return false;
-    }
-
-    if (!city.trim()) {
-      toast.error("يرجى إدخال المدينة");
       return false;
     }
 
@@ -113,13 +84,10 @@ function Signup() {
 
     try {
       const signupData = {
-        name: `${formData.firstName} ${formData.lastName}`,
+        name: formData.name,
         email: formData.email,
         password: formData.password,
         phone: formData.phone,
-        governorate: formData.governorate,
-        city: formData.city,
-        address: formData.detailedAddress,
       };
 
       const res = await axios.post(
@@ -131,6 +99,9 @@ function Signup() {
       if (res.data && res.data.user) {
         setUser(res.data.user);
         toast.success("تم إنشاء الحساب بنجاح!");
+        setTimeout(() => {
+          navigate("/login");
+        }, 1000);
       }
     } catch (error) {
       if (error.response?.status === 400) {
@@ -221,37 +192,23 @@ function Signup() {
           dir="rtl"
           onSubmit={handleSubmit}
         >
-          <div className="flex gap-3">
-            <div className="w-1/2">
-              <label className="block text-sm font-medium mb-1">
-                الاسم الاول<span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleInputChange}
-                disabled={isLoading}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 outline-none"
-                placeholder="محمد"
-              />
-            </div>
-            <div className="w-1/2">
-              <label className="block text-sm font-medium mb-1">
-                الاسم الاخير<span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleInputChange}
-                disabled={isLoading}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 outline-none"
-                placeholder="احمد"
-              />
-            </div>
+          {/* Name Field */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              الاسم <span className="text-red-500">*</span>
+            </label>
+            <input
+              type="text"
+              name="name"
+              value={formData.name}
+              onChange={handleInputChange}
+              disabled={isLoading}
+              className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 outline-none"
+              placeholder="محمد احمد"
+            />
           </div>
 
+          {/* Email */}
           <div>
             <label className="block text-sm font-medium mb-1">
               الإيميل<span className="text-red-500">*</span>
@@ -267,6 +224,25 @@ function Signup() {
             />
           </div>
 
+          {/* Phone */}
+          <div>
+            <label className="block text-sm font-medium mb-1">
+              رقم الهاتف<span className="text-red-500">*</span>
+            </label>
+            <div className="flex">
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleInputChange}
+                disabled={isLoading}
+                className="w-full border border-gray-300 rounded-r-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 outline-none"
+                placeholder="123456789"
+              />
+            </div>
+          </div>
+
+          {/* Password */}
           <div>
             <label className="block text-sm font-medium mb-1">
               الباسورد<span className="text-red-500">*</span>
@@ -282,72 +258,19 @@ function Signup() {
             />
           </div>
 
+          {/* Confirm Password */}
           <div>
             <label className="block text-sm font-medium mb-1">
-              رقم الهاتف<span className="text-red-500">*</span>
-            </label>
-            <div className="flex">
-              <select
-                className="border border-gray-300 rounded-l-lg px-3 py-2 bg-gray-100"
-                disabled={isLoading}
-              >
-                <option value="+20">+20</option>
-              </select>
-              <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
-                onChange={handleInputChange}
-                disabled={isLoading}
-                className="w-full border border-gray-300 rounded-r-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 outline-none"
-                placeholder="123456789"
-              />
-            </div>
-          </div>
-
-          <div className="flex gap-3">
-            <div className="w-1/2">
-              <label className="block text-sm font-medium mb-1">
-                المحافظة<span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="governorate"
-                value={formData.governorate}
-                onChange={handleInputChange}
-                disabled={isLoading}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 outline-none"
-                placeholder="القاهرة"
-              />
-            </div>
-            <div className="w-1/2">
-              <label className="block text-sm font-medium mb-1">
-                المدينة<span className="text-red-500">*</span>
-              </label>
-              <input
-                type="text"
-                name="city"
-                value={formData.city}
-                onChange={handleInputChange}
-                disabled={isLoading}
-                className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 outline-none"
-                placeholder="مدينة نصر"
-              />
-            </div>
-          </div>
-
-          <div>
-            <label className="block text-sm font-medium mb-1">
-              العنوان بالتفاصيل
+              تأكيد الباسورد<span className="text-red-500">*</span>
             </label>
             <input
-              type="text"
-              name="detailedAddress"
-              value={formData.detailedAddress}
+              type="password"
+              name="confirmPassword"
+              value={formData.confirmPassword}
               onChange={handleInputChange}
               disabled={isLoading}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-2 focus:ring-yellow-400 outline-none"
-              placeholder="الشارع والرقم والتفاصيل"
+              placeholder="********"
             />
           </div>
 

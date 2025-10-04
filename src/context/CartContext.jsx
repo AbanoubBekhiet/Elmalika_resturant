@@ -33,18 +33,22 @@ export function CartProvider({ children }) {
 		withCredentials: true,
 	});
 
-	// ✅ helper to recalc totals
-	const calculateTotals = (items, shipping = 0) => {
-		const totalPrice = items.reduce(
-			(sum, item) =>
-				sum +
-				(item.size?.price || item.sizePrice || item.price) * item.quantity,
-			0
-		);
+	const calculateTotals = (items, shipping = 30) => {
+		const totalPrice = items.reduce((sum, item) => {
+			const sizePrice = item.size?.price || 0;
+
+			// ✅ sum all addon prices (per quantity)
+			const addonsPrice = (item.addonIds || []).reduce((acc, addonId) => {
+				const addon = item.product?.addons?.find((a) => a.id === addonId);
+				return acc + (addon?.price || 0);
+			}, 0);
+
+			return sum + (sizePrice + addonsPrice) * item.quantity;
+		}, 0);
 
 		return {
 			items,
-			itemsCount: items.length, // count unique items
+			itemsCount: items.length,
 			totalPrice,
 			shipping,
 			grandTotal: totalPrice + shipping,
@@ -64,7 +68,7 @@ export function CartProvider({ children }) {
 				const res = await api.get("/cart");
 
 				// Expecting API to return { items: [...], shipping: ... }
-				setCart(calculateTotals(res.data.items || [], res.data.shipping || 0));
+				setCart(calculateTotals(res.data.items));
 			} catch (err) {
 				console.error("Failed to fetch cart:", err);
 			} finally {
@@ -75,7 +79,6 @@ export function CartProvider({ children }) {
 		fetchCart();
 	}, [isAuthenticated, accessToken]);
 
-	// ✅ Add to cart (always use backend ID if available)
 	const addToCart = async (product, sizeId, quantity, addonIds = []) => {
 		try {
 			const res = await api.post("/cart", {
@@ -84,17 +87,15 @@ export function CartProvider({ children }) {
 				quantity,
 				addonIds,
 			});
-
-			// Adjust this based on your API response structure
 			const backendItem = res.data.item || res.data;
 
 			const newItem = {
-				id: backendItem?.id ?? Date.now(), // ✅ backend ID first, fallback if missing
+				id: backendItem?.id,
 				productId: product.id,
 				product,
 				sizeId,
 				addonIds,
-				quantity: backendItem?.quantity ?? quantity,
+				quantity: quantity,
 				size: product.sizes?.find((s) => s.id === sizeId),
 			};
 
@@ -185,7 +186,7 @@ export function CartProvider({ children }) {
 			clearCart,
 			loading,
 			isAuthenticated,
-			clearCartLocally
+			clearCartLocally,
 		}),
 		[cart, loading, isAuthenticated]
 	);

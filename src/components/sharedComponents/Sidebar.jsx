@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import Logo from "./../../assets/queen.jpeg";
 import {
 	FaClipboardList,
@@ -12,6 +12,7 @@ import {
 import { IoMdAdd } from "react-icons/io";
 
 import SidebarLink from "./SidebarLink";
+import { UserContext } from "../../context/AuthContext";
 const navLinks = [
 	{ to: "/dashboard", label: "الرئيسية", icon: FaThLarge },
 	{ to: "/dashboard/orders", label: "الطلبات", icon: FaClipboardList },
@@ -23,6 +24,10 @@ const navLinks = [
 ];
 
 const Sidebar = () => {
+	const { logout } = useContext(UserContext);
+	function handleLogout() {
+		logout();
+	}
 	return (
 		<div className="h-full  lg:h-screen w-60 bg-white shadow-lg rounded-b-xl p-4 flex flex-col justify-between overflow-y-auto">
 			{/* Top Section */}
@@ -50,12 +55,13 @@ const Sidebar = () => {
 					label="المساعدة"
 					icon={FaQuestionCircle}
 				/>
-				<SidebarLink
-					key="/logout"
-					to="/logout"
-					label="تسجيل الخروج"
-					icon={FaSignOutAlt}
-				/>
+				<div
+					onClick={handleLogout}
+					className="flex items-center justify-between rounded-lg px-3 py-2 cursor-pointer transition text-gray-700 hover:text-yellow-600"
+				>
+					<span className="font-medium">تسجيل خروج</span>
+					<FaSignOutAlt />
+				</div>
 			</div>
 		</div>
 	);

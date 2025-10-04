@@ -4,7 +4,7 @@ import queen from "./../../assets/queen.jpeg";
 import { Link } from "react-router-dom";
 import { CiLock } from "react-icons/ci";
 
-function Login() {
+function NewPassowrd() {
 	return (
 		<div
 			className="min-h-screen flex items-center justify-center bg-cover bg-center"
@@ -25,7 +25,7 @@ function Login() {
 				<div className="flex  justify-center">
 					<h2 className="font-thin  mt-2 text-center text-gray-500">
 						{" "}
-						نحن نسمح للمستخدمين بإعادة تعين كلمة مرور جيدية لسحابهم بشكل امن
+						نحن نسمح للمستخدمين بإعادة تعين كلمة مرور جديدة لحسابهم بشكل امن
 					</h2>
 				</div>
 
@@ -65,4 +65,4 @@ function Login() {
 	);
 }
 
-export default Login;
+export default NewPassowrd;
