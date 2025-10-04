@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, memo } from "react";
 import OrdersTable from "./OrdersTable";
 import FilterButton from "./OrdersTablePage/Header/FilterButton";
 import SearchBar from "./OrdersTablePage/Header/SearchBar";
@@ -129,4 +129,4 @@ const OrdersTablePage = () => {
 	);
 };
 
-export default OrdersTablePage;
+export default memo (OrdersTablePage);

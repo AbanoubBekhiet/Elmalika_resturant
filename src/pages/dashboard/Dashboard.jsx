@@ -21,7 +21,7 @@ function Dashboard() {
 			try {
 				const { data } = await axios.get(API_URL, { withCredentials: true });
 				setStats(data);
-				console.log(data)
+				// console.log(data)
 			} catch (err) {
 				setError("فشل في تحميل البيانات");
 				console.error(err);

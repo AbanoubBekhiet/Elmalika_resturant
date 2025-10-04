@@ -3,6 +3,7 @@ import ProfileInfoCard from "../../components/dashboard/options/ProfileInfoCard"
 import ContactDetailsCard from "../../components/dashboard/options/ContactDetailsCard";
 import Taps from "./../../components/sharedComponents/Taps";
 import PrivacyAndSafety from "../../components/dashboard/options/PrivacyAndSafety";
+import { ToastContainer } from "react-toastify";
 
 const tabs = [
 	// { id: 1, label: "الحساب الشخصي" },
@@ -11,7 +12,7 @@ const tabs = [
 ];
 
 function Options() {
-	const [selectedTab, setSelectedTab] = useState(1); 
+	const [selectedTab, setSelectedTab] = useState(1);
 
 	const renderContent = () => {
 		switch (selectedTab) {
@@ -39,6 +40,17 @@ function Options() {
 				onTabChange={setSelectedTab}
 			/>
 			{renderContent()}
+			<ToastContainer
+				rtl
+				position="top-right"
+				autoClose={3000}
+				hideProgressBar={false}
+				newestOnTop={false}
+				closeOnClick
+				pauseOnFocusLoss
+				draggable
+				pauseOnHover
+			/>
 		</div>
 	);
 }

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 const OrderTypesStatistics = ({ data }) => {
 	const maxValue = Math.max(...data.map((item) => item.value));
@@ -52,4 +52,4 @@ const OrderTypesStatistics = ({ data }) => {
 	);
 };
 
-export default OrderTypesStatistics;
+export default memo(OrderTypesStatistics);

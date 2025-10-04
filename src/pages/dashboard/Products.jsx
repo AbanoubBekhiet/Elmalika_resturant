@@ -32,8 +32,6 @@ function Products() {
 				const data = Array.isArray(res.data) ? res.data : [];
 				setProducts(data);
 				setFilteredProducts(data);
-				console.log(res.data);
-				// Update tab counts dynamically
 				const newTabs = tabsTemplate.map((tab) => {
 					if (tab.id === "all") return { ...tab, count: data.length };
 					return {

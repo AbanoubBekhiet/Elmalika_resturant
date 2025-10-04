@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
 	BarChart,
 	Bar,
@@ -78,4 +78,4 @@ const NumberOfOrdersStatistics = ({ data }) => {
 	);
 };
 
-export default NumberOfOrdersStatistics;
+export default memo(NumberOfOrdersStatistics);

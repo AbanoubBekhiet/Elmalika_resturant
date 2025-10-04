@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import TableHeader from "./OrdersTablePage/OrdersTable/TableHeader";
 import TableRow from "./TableRow";
 import { ToastContainer } from "react-toastify";
@@ -13,17 +13,17 @@ const OrdersTable = ({ orders }) => (
 				))}
 			</tbody>
 		</table>
-			<ToastContainer
-				rtl
-				position="top-right"
-				autoClose={3000}
-				hideProgressBar={false}
-				newestOnTop={false}
-				closeOnClick
-				pauseOnFocusLoss
-				draggable
-				pauseOnHover
-			/>
+		<ToastContainer
+			rtl
+			position="top-right"
+			autoClose={3000}
+			hideProgressBar={false}
+			newestOnTop={false}
+			closeOnClick
+			pauseOnFocusLoss
+			draggable
+			pauseOnHover
+		/>
 	</div>
 );
-export default OrdersTable;
+export default memo(OrdersTable);

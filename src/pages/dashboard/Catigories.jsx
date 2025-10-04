@@ -14,7 +14,7 @@ function Categories() {
 	const [categories, setCategories] = useState([]);
 	const [formHeader, setFormHeader] = useState("إضافة تصنيف");
 	const [selectedCategory, setSelectedCategory] = useState(null);
-	const [searchTerm, setSearchTerm] = useState(""); // ✅ NEW state for search
+	const [searchTerm, setSearchTerm] = useState(""); // 
 
 	return (
 		<>

@@ -14,6 +14,7 @@ import ProtectedAdminLayout from "./layouts/ProtectedAdminLayout";
 import ProtectedUserLayout from "./layouts/ProtectedUserLayout";
 import { ToastContainer } from "react-toastify";
 import Loader from "./loaders/Loader";
+import Unauthorized from "./components/sharedComponents/Unauthorized";
 const Home = lazy(() => import("./pages/customer/Home"));
 const ReadyForEat = lazy(() => import("./pages/customer/ReadyForEat"));
 const ReadyForCook = lazy(() => import("./pages/customer/ReadyForCook"));
@@ -68,6 +69,7 @@ function App() {
 							</Route>
 						</Route>
 						<Route path="*" element={"not found"} />
+						<Route path="unauthorized" element={<Unauthorized/>} />
 					</Routes>
 					<ToastContainer
 						rtl

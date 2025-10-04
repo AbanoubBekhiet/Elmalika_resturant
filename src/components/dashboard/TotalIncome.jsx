@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 import {
 	LineChart,
 	Line,
@@ -12,7 +12,6 @@ import {
 } from "recharts";
 
 const TotalIncome = ({ data }) => {
-
 	// Custom tooltip component
 	const CustomTooltip = ({ active, payload }) => {
 		if (active && payload && payload.length) {
@@ -141,4 +140,4 @@ const TotalIncome = ({ data }) => {
 	);
 };
 
-export default TotalIncome;
+export default memo(TotalIncome);

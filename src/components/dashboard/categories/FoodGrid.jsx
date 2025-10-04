@@ -20,7 +20,6 @@ function FoodGrid({
 				const res = await axios.get("https://api.queen.kitchen/categories", {
 					withCredentials: true,
 				});
-				console.log("Categories:", res.data);
 				setCategories(res.data);
 			} catch (error) {
 				console.error(

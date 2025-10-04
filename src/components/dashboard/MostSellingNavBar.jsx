@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { memo, useEffect, useState } from "react";
 import MostSellingCard from "./MostSellingCard";
 import axios from "axios";
 import { HiOutlineArrowRight } from "react-icons/hi";
@@ -91,4 +91,4 @@ const MostSellingNavBar = () => {
 	);
 };
 
-export default MostSellingNavBar;
+export default memo(MostSellingNavBar);

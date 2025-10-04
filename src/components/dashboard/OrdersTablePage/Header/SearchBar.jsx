@@ -1,4 +1,4 @@
-import React from "react";
+import React, { memo } from "react";
 
 const SearchBar = ({ searchTerm, setSearchTerm }) => (
 	<div className="flex items-center border rounded-lg px-2 sm:px-3 py-2 bg-gray-50 w-full max-w-md">
@@ -25,4 +25,4 @@ const SearchBar = ({ searchTerm, setSearchTerm }) => (
 	</div>
 );
 
-export default SearchBar;
+export default memo (SearchBar);
