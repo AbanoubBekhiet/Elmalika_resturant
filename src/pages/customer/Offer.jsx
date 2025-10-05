@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { FaCheck } from "react-icons/fa";
 import axios from "axios";
-import defaultImage from "./../../assets/offerBG.png";
+import defaultFood from "./../../assets/defaultFood.webp";
 import Loader from "./../../loaders/Loader";
 import { Link } from "react-router-dom";
 const API_BASE_URL = "https://api.queen.kitchen";
@@ -35,7 +35,7 @@ export default function Offer() {
 				setLoading(false);
 			}
 		};
-		
+
 		fetchProduct();
 	}, []);
 
@@ -63,8 +63,10 @@ export default function Offer() {
 				{/* الصورة */}
 				<div className="w-full lg:w-1/2 mb-8 lg:mb-0">
 					<img
-						src={product.imageUrl || defaultImage}
+						src={product.imageUrl || defaultFood}
 						alt={product.name}
+						onError={(e) => (e.currentTarget.src = defaultFood)}
+						loading="lazy"
 						className="w-full h-auto object-cover rounded-lg"
 					/>
 				</div>
@@ -115,11 +117,11 @@ export default function Offer() {
 						{/* السعر */}
 						<div className="flex items-baseline justify-end gap-4">
 							<span className="line-through text-gray-400">
-								{product.price + 150} جنيه
+								{product?.sizes[0]?.price + 50} جنيه
 							</span>
 							<span className="text-3xl font-bold">
 								<span className="text-lg font-normal">جنيه مصري</span>{" "}
-								{product.price}
+								{product?.sizes[0]?.price}
 							</span>
 						</div>
 					</div>

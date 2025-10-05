@@ -3,7 +3,7 @@ import { AiFillStar, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import { HiOutlineShoppingCart } from "react-icons/hi2";
 import { useState, useContext, useEffect } from "react";
 import React from "react";
-import fallbackImage from "./../../assets/product.jpg";
+import defaultFood from "./../../assets/defaultFood.webp"
 import { Link, NavLink } from "react-router-dom";
 import axios from "axios";
 import { toast } from "react-toastify";
@@ -15,7 +15,7 @@ const API_BASE_URL = "https://api.queen.kitchen";
 export default function ProductCard({ product }) {
 	const { accessToken } = useContext(UserContext);
 	const [favorite, setFavorite] = useState(false);
-	useEffect(() => {
+		useEffect(() => {
 		if (!accessToken) return;
 		const fetchFavorites = async () => {
 			try {
@@ -71,27 +71,19 @@ export default function ProductCard({ product }) {
 	const rating = product?.ratingAverage ?? 0;
 	const maxStars = 5;
 	const ratingCount = product?.ratingCount ?? 0;
-	// console.log(product)
 	return (
 		<div className="bg-white rounded-2xl shadow-md overflow-hidden relative">
 			{/* Image */}
 			<div className="relative w-full aspect-[4/3] bg-gray-100">
 				<NavLink to={`/product/${product.id}/${product.categoryId}`}>
 					<img
-						src={product.imageUrl || fallbackImage}
+						src={product.imageUrl || defaultFood}
 						alt={product.name}
 						loading="lazy"
 						className="w-full h-full object-cover rounded-t-2xl transition-transform duration-300 hover:scale-105"
-						onError={(e) => (e.currentTarget.src = fallbackImage)}
+						onError={(e) => (e.currentTarget.src = defaultFood)}
 					/>
 				</NavLink>
-
-				{/* Discount badge */}
-				{product.discount && (
-					<span className="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-md shadow-md">
-						-{product.discount}%
-					</span>
-				)}
 			</div>
 
 			{/* Content */}
@@ -107,7 +99,7 @@ export default function ProductCard({ product }) {
 								}
 							/>
 						))}
-						<span className="ml-1 text-gray-600 text-xs">
+						<span className="hidden sm:inline ml-1 text-gray-600 text-xs">
 							({ratingCount} من التقيمات)
 						</span>
 					</div>
@@ -124,13 +116,13 @@ export default function ProductCard({ product }) {
 				{/* Prices */}
 				<div className="flex items-center gap-2">
 					<span className="text-[#FFC222] font-semibold">
-						{product?.price} جنيه مصري
+						{/* {product?.sizes[0]?.price} جنيه مصري */}
 					</span>
-					{product.oldPrice && (
+					{
 						<span className="text-gray-400 text-sm line-through">
-							{product.oldPrice}
+							{/* {product?.sizes[0]?.price + 50} */}
 						</span>
-					)}
+					}
 				</div>
 
 				{/* Add to cart */}

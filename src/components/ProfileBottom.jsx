@@ -30,7 +30,6 @@ export default function ProfileBottom({ tap }) {
 						...(accessToken && { Authorization: `Bearer ${accessToken}` }),
 					},
 				});
-
 				let favoritesData = [];
 
 				if (Array.isArray(res.data)) {
@@ -208,7 +207,7 @@ export default function ProfileBottom({ tap }) {
 													}
 													price={item?.size?.price}
 													qty={item?.quantity}
-													img={item?.product?.imageUrl }
+													img={item?.product?.imageUrl}
 												/>
 											))}
 										</div>
@@ -299,6 +298,17 @@ export default function ProfileBottom({ tap }) {
 							</div>
 						</div>
 					)}
+					<ToastContainer
+						rtl
+						position="top-right"
+						autoClose={3000}
+						hideProgressBar={false}
+						newestOnTop={false}
+						closeOnClick
+						pauseOnFocusLoss
+						draggable
+						pauseOnHover
+					/>
 				</div>
 			) : (
 				<div className="flex-col gap-4 p-6 bg-gray-100 ">
@@ -319,8 +329,8 @@ export default function ProfileBottom({ tap }) {
 											i={i}
 											name={item?.name}
 											desc={item?.desc || item?.description}
-											price={item?.price}
-											img={item?.img || item?.image}
+											price={item?.sizes[0]?.price}
+											img={item?.imageUrl}
 											id={item?.id}
 											categoryId={item?.categoryId}
 											onRemove={handleRemoveFavorite}

@@ -31,6 +31,7 @@ function Products() {
 			.then((res) => {
 				const data = Array.isArray(res.data) ? res.data : [];
 				setProducts(data);
+				// console.log(data)
 				setFilteredProducts(data);
 				const newTabs = tabsTemplate.map((tab) => {
 					if (tab.id === "all") return { ...tab, count: data.length };

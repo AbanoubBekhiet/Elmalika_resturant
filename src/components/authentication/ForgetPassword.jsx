@@ -6,6 +6,7 @@ import axios from "axios";
 import { UserContext } from "../../context/AuthContext";
 import { useNavigate } from "react-router-dom";
 import { toast, ToastContainer } from "react-toastify";
+import Cookies from "js-cookie";
 
 const BASE_URL = "https://api.queen.kitchen";
 
@@ -36,7 +37,10 @@ function Login() {
 					withCredentials: true,
 				}
 			);
+			console.log(res)
 			toast.success("تم إرسال رمز التحقق إلى بريدك الإلكتروني");
+			Cookies.set("otp_t", res.data.token, { expires: 0.0034722 });
+			
 			setTimeout(() => {
 				navigate("/otp", { state: { email } });
 			}, 1000);

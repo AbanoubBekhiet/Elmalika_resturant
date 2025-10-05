@@ -1,5 +1,5 @@
 import React, { useContext, useState } from "react";
-import image from "./../../assets/product.jpg";
+import defaultFood from "./../../assets/defaultFood.webp";
 import { UserContext } from "../../context/AuthContext";
 import axios from "axios";
 import { toast, ToastContainer } from "react-toastify";
@@ -142,10 +142,11 @@ function ProfileCard({
 			)}
 
 			<img
-				src={img ? `${API_BASE_URL}/${img}` : image}
+				src={img ? `${API_BASE_URL}/${img}` : defaultFood}
 				alt={name}
 				loading="lazy"
 				className="w-24 h-20 sm:w-28 sm:h-24 lg:w-36 lg:h-32 rounded-lg object-cover flex-shrink-0"
+				onError={(e) => (e.currentTarget.src = defaultFood)}
 			/>
 		</div>
 	);

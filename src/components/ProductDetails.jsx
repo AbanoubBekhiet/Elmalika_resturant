@@ -1,11 +1,11 @@
 // src/pages/ProductDetails.jsx
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import { AiFillStar } from "react-icons/ai";
+import { AiFillStar,AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from "axios";
 import Loader from "./../loaders/Loader.jsx";
 import { FaShare } from "react-icons/fa";
-import defaultImage from "./../assets/product.jpg";
+import defaultFood from "./../assets/defaultFood.webp";
 import SimilarProducts from "./SimilarProducts.jsx";
 import Rating from "./Rating.jsx";
 import { ToastContainer, toast } from "react-toastify";
@@ -146,8 +146,10 @@ export default function ProductDetails() {
 
 									<div className="w-full h-[700px] contain-content overflow-hidden rounded-lg">
 										<img
-											src={product?.imageUrl || defaultImage}
-											alt={product?.name || "No name"}
+											src={product?.imageUrl || defaultFood}
+											alt={product?.name || "مطبخ الملكة"}
+											loading="lazy"
+											onError={(e) => (e.currentTarget.src = defaultFood)}
 											className="w-full h-full object-cover"
 										/>
 									</div>
@@ -156,8 +158,10 @@ export default function ProductDetails() {
 									{similarProducts.slice(0, 5).map((e, i) => (
 										<img
 											key={i}
-											src={e.imageUrl || defaultImage}
-											alt=""
+											src={e.imageUrl || defaultFood}
+											loading="lazy"
+											onError={(e) => (e.currentTarget.src = defaultFood)}
+											alt="مطبخ الملكة"
 											className="w-20 h-25 rounded-2xl"
 										/>
 									))}

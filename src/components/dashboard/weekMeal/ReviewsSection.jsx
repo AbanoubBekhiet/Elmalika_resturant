@@ -1,7 +1,7 @@
 // src/components/dashboard/reviews/ReviewsSection.jsx
 import React, { useState } from "react";
 import { IoChevronBack, IoChevronForward } from "react-icons/io5";
-import fallbackImage from "./../../../assets/product.jpg";
+import defaultPerson from "./../../../assets/defaultPerson.webp";
 
 const ReviewsSection = ({ reviews = [], loading = false }) => {
 	const [currentSlide, setCurrentSlide] = useState(0);
@@ -114,8 +114,9 @@ const ReviewsSection = ({ reviews = [], loading = false }) => {
 										{/* Avatar and Name */}
 										<div className="text-center mb-4">
 											<img
-												src={review.user?.avatar || fallbackImage}
+												src={review.user?.avatar || defaultPerson}
 												alt={review.user?.name || "مستخدم"}
+												loading="lazy"
 												className={`${avatarSize} rounded-full mx-auto mb-3 object-cover`}
 											/>
 											<h4 className={`${nameSize} text-gray-800`}>

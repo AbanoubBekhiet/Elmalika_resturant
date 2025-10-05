@@ -3,7 +3,7 @@ import { FaRegEnvelope } from "react-icons/fa";
 import { VscFileSubmodule } from "react-icons/vsc";
 import { ImProfile } from "react-icons/im";
 import React, { useContext, useEffect, useState } from "react";
-import defaultPerson from "./../assets/defaultPerson.jpg";
+import defaultPerson from "./../assets/defaultPerson.webp";
 import Taps from "./sharedComponents/Taps";
 import { UserContext } from "../context/AuthContext";
 import axios from "axios";
@@ -29,7 +29,7 @@ function ProfileHead({ setTap, tap }) {
 	const [editFormData, setEditFormData] = useState({
 		name: "",
 		phone: "",
-		email: ""
+		email: "",
 	});
 	const [addressFormData, setAddressFormData] = useState({
 		city: "",
@@ -37,7 +37,7 @@ function ProfileHead({ setTap, tap }) {
 		building: "",
 		floor: "",
 		apartment: "",
-		note: ""
+		note: "",
 	});
 	const API_BASE_URL = "https://api.queen.kitchen";
 
@@ -57,7 +57,7 @@ function ProfileHead({ setTap, tap }) {
 				setEditFormData({
 					name: res.data.name || "",
 					phone: res.data.phone || "",
-					email: res.data.email || ""
+					email: res.data.email || "",
 				});
 			} catch (error) {
 				console.error("Error fetching user data:", error);
@@ -169,7 +169,7 @@ function ProfileHead({ setTap, tap }) {
 				`${API_BASE_URL}/users/me`,
 				{
 					name: editFormData.name,
-					phone: editFormData.phone
+					phone: editFormData.phone,
 				},
 				{
 					withCredentials: true,
@@ -196,14 +196,18 @@ function ProfileHead({ setTap, tap }) {
 		e.preventDefault();
 		try {
 			setLoading(true);
-			const res = await axios.post(`${API_BASE_URL}/addresses`, addressFormData, {
-				withCredentials: true,
-				headers: {
-					"Content-Type": "application/json",
-					...(accessToken && { Authorization: `Bearer ${accessToken}` }),
-				},
-			});
-			
+			const res = await axios.post(
+				`${API_BASE_URL}/addresses`,
+				addressFormData,
+				{
+					withCredentials: true,
+					headers: {
+						"Content-Type": "application/json",
+						...(accessToken && { Authorization: `Bearer ${accessToken}` }),
+					},
+				}
+			);
+
 			setUserAddresses((prev) => [...prev, res.data]);
 			setShowAddAddressForm(false);
 			setAddressFormData({
@@ -212,7 +216,7 @@ function ProfileHead({ setTap, tap }) {
 				building: "",
 				floor: "",
 				apartment: "",
-				note: ""
+				note: "",
 			});
 			toast.success("تم إضافة العنوان بنجاح");
 		} catch (error) {
@@ -240,13 +244,13 @@ function ProfileHead({ setTap, tap }) {
 					<div className="relative flex flex-col md:flex-row m-5 p-5 sm:p-10 border-gray-300 border-dashed border-2 rounded-2xl justify-evenly items-center md:items-start md:justify-between gap-6">
 						{/* Edit and Add Address Icons */}
 						<div className="absolute top-2 left-2 flex gap-2 text-2xl sm:text-3xl">
-							<div 
+							<div
 								className="cursor-pointer hover:text-[#f5c837] transition-colors p-2"
 								onClick={() => setShowEditForm(true)}
 							>
 								<CiEdit />
 							</div>
-							<div 
+							<div
 								className="cursor-pointer hover:bg-[#fbfcc4] transition-colors text-2xl bg-[#f5c837] p-2 rounded-2xl"
 								onClick={() => setShowAddAddressForm(true)}
 							>
@@ -259,6 +263,7 @@ function ProfileHead({ setTap, tap }) {
 							<img
 								src={defaultPerson}
 								alt="defaultPerson"
+								loading="lazy"
 								className="w-full rounded-full"
 							/>
 							<span className="mt-2 text-sm sm:text-base">{userData.name}</span>
@@ -350,7 +355,10 @@ function ProfileHead({ setTap, tap }) {
 					{/* Edit Profile Modal */}
 					{showEditForm && (
 						<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-							<div className="bg-white p-6 rounded-lg w-96 max-w-90vw" dir="rtl">
+							<div
+								className="bg-white p-6 rounded-lg w-96 max-w-90vw"
+								dir="rtl"
+							>
 								<div className="flex justify-between items-center mb-4">
 									<h2 className="text-xl font-bold">تعديل الملف الشخصي</h2>
 									<button
@@ -362,21 +370,35 @@ function ProfileHead({ setTap, tap }) {
 								</div>
 								<form onSubmit={handleUpdateProfile}>
 									<div className="mb-4">
-										<label className="block text-sm font-medium mb-2">الاسم</label>
+										<label className="block text-sm font-medium mb-2">
+											الاسم
+										</label>
 										<input
 											type="text"
 											value={editFormData.name}
-											onChange={(e) => setEditFormData({...editFormData, name: e.target.value})}
+											onChange={(e) =>
+												setEditFormData({
+													...editFormData,
+													name: e.target.value,
+												})
+											}
 											className="w-full p-2 border rounded-md"
 											required
 										/>
 									</div>
 									<div className="mb-4">
-										<label className="block text-sm font-medium mb-2">الهاتف</label>
+										<label className="block text-sm font-medium mb-2">
+											الهاتف
+										</label>
 										<input
 											type="tel"
 											value={editFormData.phone}
-											onChange={(e) => setEditFormData({...editFormData, phone: e.target.value})}
+											onChange={(e) =>
+												setEditFormData({
+													...editFormData,
+													phone: e.target.value,
+												})
+											}
 											className="w-full p-2 border rounded-md"
 											required
 										/>
@@ -404,7 +426,10 @@ function ProfileHead({ setTap, tap }) {
 					{/* Add Address Modal */}
 					{showAddAddressForm && (
 						<div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
-							<div className="bg-white p-6 rounded-lg w-96 max-w-90vw max-h-90vh overflow-y-auto" dir="rtl">
+							<div
+								className="bg-white p-6 rounded-lg w-96 max-w-90vw max-h-90vh overflow-y-auto"
+								dir="rtl"
+							>
 								<div className="flex justify-between items-center mb-4">
 									<h2 className="text-xl font-bold">إضافة عنوان جديد</h2>
 									<button
@@ -416,60 +441,102 @@ function ProfileHead({ setTap, tap }) {
 								</div>
 								<form onSubmit={handleAddAddress}>
 									<div className="mb-4">
-										<label className="block text-sm font-medium mb-2">المحافظة</label>
+										<label className="block text-sm font-medium mb-2">
+											المحافظة
+										</label>
 										<input
 											type="text"
 											value={addressFormData.city}
-											onChange={(e) => setAddressFormData({...addressFormData, city: e.target.value})}
+											onChange={(e) =>
+												setAddressFormData({
+													...addressFormData,
+													city: e.target.value,
+												})
+											}
 											className="w-full p-2 border rounded-md"
 											required
 										/>
 									</div>
 									<div className="mb-4">
-										<label className="block text-sm font-medium mb-2">الشارع</label>
+										<label className="block text-sm font-medium mb-2">
+											الشارع
+										</label>
 										<input
 											type="text"
 											value={addressFormData.street}
-											onChange={(e) => setAddressFormData({...addressFormData, street: e.target.value})}
+											onChange={(e) =>
+												setAddressFormData({
+													...addressFormData,
+													street: e.target.value,
+												})
+											}
 											className="w-full p-2 border rounded-md"
 											required
 										/>
 									</div>
 									<div className="mb-4">
-										<label className="block text-sm font-medium mb-2">المبنى</label>
+										<label className="block text-sm font-medium mb-2">
+											المبنى
+										</label>
 										<input
 											type="text"
 											value={addressFormData.building}
-											onChange={(e) => setAddressFormData({...addressFormData, building: e.target.value})}
+											onChange={(e) =>
+												setAddressFormData({
+													...addressFormData,
+													building: e.target.value,
+												})
+											}
 											className="w-full p-2 border rounded-md"
 											required
 										/>
 									</div>
 									<div className="mb-4">
-										<label className="block text-sm font-medium mb-2">الطابق</label>
+										<label className="block text-sm font-medium mb-2">
+											الطابق
+										</label>
 										<input
 											type="text"
 											value={addressFormData.floor}
-											onChange={(e) => setAddressFormData({...addressFormData, floor: e.target.value})}
+											onChange={(e) =>
+												setAddressFormData({
+													...addressFormData,
+													floor: e.target.value,
+												})
+											}
 											className="w-full p-2 border rounded-md"
 											required
 										/>
 									</div>
 									<div className="mb-4">
-										<label className="block text-sm font-medium mb-2">الشقة</label>
+										<label className="block text-sm font-medium mb-2">
+											الشقة
+										</label>
 										<input
 											type="text"
 											value={addressFormData.apartment}
-											onChange={(e) => setAddressFormData({...addressFormData, apartment: e.target.value})}
+											onChange={(e) =>
+												setAddressFormData({
+													...addressFormData,
+													apartment: e.target.value,
+												})
+											}
 											className="w-full p-2 border rounded-md"
 											required
 										/>
 									</div>
 									<div className="mb-4">
-										<label className="block text-sm font-medium mb-2">ملاحظات (اختياري)</label>
+										<label className="block text-sm font-medium mb-2">
+											ملاحظات (اختياري)
+										</label>
 										<textarea
 											value={addressFormData.note}
-											onChange={(e) => setAddressFormData({...addressFormData, note: e.target.value})}
+											onChange={(e) =>
+												setAddressFormData({
+													...addressFormData,
+													note: e.target.value,
+												})
+											}
 											className="w-full p-2 border rounded-md"
 											rows="3"
 										/>

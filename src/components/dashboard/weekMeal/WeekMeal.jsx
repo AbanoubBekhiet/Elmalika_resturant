@@ -5,6 +5,7 @@ import { NavLink } from "react-router-dom";
 import axios from "axios";
 import { IoMdClose } from "react-icons/io";
 import { toast, ToastContainer } from "react-toastify";
+import defaultFood from "./../../../assets/defaultFood.webp"
 
 const FOOD_TYPES = [
 	{ value: "GRILLED", label: "مشويات" },
@@ -28,7 +29,6 @@ const WeekMeal = ({ dish: initialDish }) => {
 		foodType: initialDish?.foodType || "",
 		file: null,
 	});
-
 	if (!dish) return null;
 
 	const handleChange = (e) => {
@@ -97,8 +97,9 @@ const WeekMeal = ({ dish: initialDish }) => {
 			{/* Product Image */}
 			<div className="relative w-full p-6">
 				<img
-					src={dish.imageUrl || fallbackImage}
+					src={dish.imageUrl || defaultFood}
 					alt={dish.name}
+					loading="lazy"
 					className="w-full h-96 object-cover rounded-2xl"
 					onError={(e) => (e.currentTarget.src = fallbackImage)}
 				/>
@@ -160,15 +161,15 @@ const WeekMeal = ({ dish: initialDish }) => {
 					<div className="text-center mb-6 Fredoka">
 						<div className="flex items-center justify-center gap-2">
 							<span className="text-2xl font-bold text-black">
-								{dish.price}
+								{dish?.sizes[0]?.price}
 							</span>
 							<span className="text-sm text-yellow-500 font-medium">
 								جنيه مصري
 							</span>
-							{(dish.oldPrice || dish.price + 50) && (
+							{dish?.sizes[0]?.price && (
 								<>
 									<span className="text-lg text-gray-400 line-through">
-										{dish.oldPrice || dish.price + 50}
+										{dish?.sizes[0]?.price + 50}
 									</span>
 									<span className="text-sm text-gray-500">جنيه</span>
 								</>

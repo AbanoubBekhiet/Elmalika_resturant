@@ -34,7 +34,7 @@ function Dashboard() {
 
 	if (loading) return <Loader/>
 	if (error) return <p className="p-5 text-red-500">{error}</p>;
-
+	
 	return (
 		<>
 			<div

@@ -5,7 +5,6 @@ import axios from "axios";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Loader from "./../loaders/Loader"; // ✅ make sure you have a Loader component
-import defaultImage from "./../assets/product.jpg";
 export default function SimilarProducts({ categoryId = 1 }) {
 	const [products, setProducts] = useState([]);
 	const [loading, setLoading] = useState(true); // ✅ loading state
@@ -26,7 +25,7 @@ export default function SimilarProducts({ categoryId = 1 }) {
 
 					const safeProducts = filtered.map((p) => ({
 						...p,
-						imageUrl: p.imageUrl || defaultImage,
+						imageUrl: p.imageUrl ,
 					}));
 
 					setProducts(safeProducts);

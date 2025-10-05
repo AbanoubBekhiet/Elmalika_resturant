@@ -1,6 +1,7 @@
 import React from "react";
-
+import defaultFood from "./../../../assets/defaultFood.webp";
 const ProductGrid = ({ products }) => {
+	console.log(products);
 	return (
 		<div className="py-6">
 			<div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-6">
@@ -12,9 +13,11 @@ const ProductGrid = ({ products }) => {
 						{/* Product Image */}
 						<div className="relative">
 							<img
-								src={product.imageUrl || "/assets/product.jpg"}
+								src={product.imageUrl || defaultFood}
 								alt={product.name}
+								loading="lazy"
 								className="w-full h-40 object-cover"
+								onError={(e) => (e.currentTarget.src = defaultFood)}
 							/>
 							{!product.isAvailable && (
 								<span className="absolute top-2 left-2 bg-red-500 text-white text-xs px-2 py-1 rounded">
@@ -35,7 +38,7 @@ const ProductGrid = ({ products }) => {
 							{/* Price */}
 							<div className="flex items-center justify-between mt-2">
 								<span className="text-yellow-500 font-bold">
-									{product.price} ج.م
+									{product?.sizes[0]?.price} ج.م
 								</span>
 								{product.oldPrice && (
 									<span className="text-gray-400 line-through text-xs">
@@ -62,7 +65,7 @@ const ProductGrid = ({ products }) => {
 										</svg>
 									))}
 								</div>
-                <span>({product.ratingCount} عدد التقيمات)</span>
+								<span>({product.ratingCount} عدد التقيمات)</span>
 							</div>
 						</div>
 					</div>
