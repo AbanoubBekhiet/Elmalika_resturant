@@ -73,7 +73,6 @@ function DishOfTheDay() {
 			</div>
 		);
 	}
-
 	return (
 		<>
 			{dish && <WeekMeal dish={dish} />}

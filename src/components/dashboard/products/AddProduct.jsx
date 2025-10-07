@@ -147,10 +147,6 @@ const ProductDetailsPage = () => {
 			)
 		);
 
-		// Debug FormData
-		for (let pair of data.entries()) {
-			console.log(pair[0], pair[1]);
-		}
 
 		try {
 			const res = await axios.post("https://api.queen.kitchen/products", data, {
@@ -161,7 +157,6 @@ const ProductDetailsPage = () => {
 				},
 			});
 			toast.success("تم حفظ جميع البيانات بنجاح!");
-			console.log("✅ Product created:", res.data);
 			setFormData({
 				name: "",
 				description: "",

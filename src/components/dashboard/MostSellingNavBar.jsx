@@ -53,8 +53,8 @@ const MostSellingNavBar = () => {
 						key={item.id || index}
 						image={item.imageUrl}
 						title={item.name}
-						price={item.price}
-						oldPrice={item.price + 40}
+						price={item?.sizes[0]?.price}
+						oldPrice={item?.sizes[0]?.price + 40}
 						sold={item.qty}
 					/>
 				))

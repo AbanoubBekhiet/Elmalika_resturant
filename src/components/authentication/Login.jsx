@@ -14,8 +14,8 @@ import Loader from "../../loaders/Loader";
 axios.defaults.withCredentials = true;
 
 function Login() {
-	const [email, setEmail] = useState("mohamed520@gmail.com");
-	const [password, setPassword] = useState("Mido@123456");
+	const [email, setEmail] = useState("");
+	const [password, setPassword] = useState("");
 	const [isLoading, setIsLoading] = useState(false);
 
 	const navigate = useNavigate();

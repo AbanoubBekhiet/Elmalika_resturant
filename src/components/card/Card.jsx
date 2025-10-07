@@ -116,11 +116,11 @@ export default function ProductCard({ product }) {
 				{/* Prices */}
 				<div className="flex items-center gap-2">
 					<span className="text-[#FFC222] font-semibold">
-						{/* {product?.sizes[0]?.price} جنيه مصري */}
+						{product?.sizes[0]?.price} جنيه مصري 
 					</span>
 					{
 						<span className="text-gray-400 text-sm line-through">
-							{/* {product?.sizes[0]?.price + 50} */}
+							{product?.sizes[0]?.price + 50}
 						</span>
 					}
 				</div>
