@@ -1,7 +1,7 @@
 // src/pages/ProductDetails.jsx
 import React, { useState, useEffect, useContext } from "react";
 import { useParams, Link } from "react-router-dom";
-import { AiFillStar,AiOutlineHeart, AiFillHeart } from "react-icons/ai";
+import { AiFillStar, AiOutlineHeart, AiFillHeart } from "react-icons/ai";
 import axios from "axios";
 import Loader from "./../loaders/Loader.jsx";
 import { FaShare } from "react-icons/fa";
@@ -10,6 +10,7 @@ import SimilarProducts from "./SimilarProducts.jsx";
 import Rating from "./Rating.jsx";
 import { ToastContainer, toast } from "react-toastify";
 import { CartContext } from "../context/CartContext"; // ✅ استدعاء الكونتكست
+import { UserContext } from "../context/AuthContext.jsx";
 
 // 🔹 baseURL هنا
 const API_BASE_URL = "https://api.queen.kitchen";
@@ -23,9 +24,9 @@ export default function ProductDetails() {
 	const [ItemSize, setItemSize] = useState(null);
 	const [loading, setLoading] = useState(true);
 	const [addonIds, setAdds] = useState([]);
+	const [isFavourite, setIsfavourite] = useState(false);
 	const { addToCart, isAuthenticated } = useContext(CartContext);
-	// جلب المنتج
-
+	const { accessToken } = useContext(UserContext);
 	useEffect(() => {
 		setLoading(true);
 		axios
@@ -35,9 +36,7 @@ export default function ProductDetails() {
 			})
 			.then((res) => {
 				setProduct(res?.data || null);
-				console.log(res.data);
 
-				// ✅ اضبط الحجم الافتراضي أول ما المنتج يتجاب
 				if (res?.data?.sizes?.length > 0) {
 					setItemSize(res.data.sizes[0]);
 				}
@@ -50,6 +49,67 @@ export default function ProductDetails() {
 			});
 	}, [productId]);
 
+	useEffect(() => {
+		if (isAuthenticated) {
+			setLoading(true);
+			axios
+				.get(`${API_BASE_URL}/favorites/${productId}`, {
+					withCredentials: true,
+					headers: {
+						"Content-Type": "application/json",
+						Authorization: `Bearer ${accessToken}`,
+					},
+				})
+				.then((res) => {
+					setIsfavourite(res?.data?.isFavorite);
+				})
+				.catch((error) => {
+					console.log(error);
+				})
+				.finally(() => {
+					setLoading(false);
+				});
+		}
+	}, [productId, isAuthenticated, accessToken]);
+
+	const toggleFavorite = async () => {
+		if (!accessToken) {
+			toast.warning("يجب ان تسجل الدخول اولا لتضيف المنتج للمفضل");
+			return;
+		}
+
+		try {
+			await axios.post(
+				`${API_BASE_URL}/favorites/toggle`,
+				{ productId: product.id },
+				{
+					headers: {
+						Authorization: `Bearer ${accessToken}`,
+					},
+					withCredentials: true,
+				}
+			);
+
+			setIsfavourite((prev) => !prev);
+
+			if (!isFavourite) {
+				toast.success("تمت إضافة المنتج إلى المفضلة");
+			} else {
+				toast.info("تم إزالة المنتج من المفضلة");
+			}
+		} catch (err) {
+			console.error("Error toggling favorite:", err);
+			toast.error("فشل في تحديث المفضلة");
+		}
+	};
+	const copyUrl = async () => {
+		try {
+			await navigator.clipboard.writeText(window.location.href);
+			toast.success("تم نسخ الرابط ");
+		} catch (err) {
+			toast.alert("يوجد مشكلة في نسخ الرابط");
+		}
+	};
 	// جلب منتجات مشابهة
 	useEffect(() => {
 		let isMounted2 = true;
@@ -136,11 +196,21 @@ export default function ProductDetails() {
 							<div>
 								<div className="relative">
 									<div className="absolute  top-1/4 -left-20 transform -translate-y-1/2 flex flex-col space-y-3 z-10">
-										<div className="bg-gray-200 p-2 rounded-lg">
+										<div
+											className="bg-gray-200 p-2 rounded-lg"
+											onClick={copyUrl}
+										>
 											<FaShare size={30} className="text-yellow-500 " />
 										</div>
-										<div className="bg-gray-200 p-2 rounded-lg">
-											<FaShare size={30} className="text-yellow-500 " />
+										<div
+											className="bg-gray-200 p-2 rounded-lg"
+											onClick={toggleFavorite}
+										>
+											{isFavourite ? (
+												<AiFillHeart size={30} className="text-red-500" />
+											) : (
+												<AiOutlineHeart size={30} className="text-red-500" />
+											)}
 										</div>
 									</div>
 
