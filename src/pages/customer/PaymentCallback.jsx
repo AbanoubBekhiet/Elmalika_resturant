@@ -3,10 +3,9 @@ import React from "react";
 function PaymentCallback() {
 	const [params] = useSearchParams();
 	const success = params.get("status");
-console.log(success)
 	return (
 		<div className="p-100 text-center">
-			<h1>{success==="success" ? "✅ Payment Successful" : "❌ Payment Failed"}</h1>
+			<h1>{success==="success" ? "✅ تم الدفع بنجاح " : "❌ لم يتم الدفع"}</h1>
 		</div>
 	);
 }
