@@ -5,6 +5,7 @@ import WeekMeal from "../../components/dashboard/weekMeal/WeekMeal";
 import ReviewsSection from "../../components/dashboard/weekMeal/ReviewsSection";
 import { UserContext } from "../../context/AuthContext";
 import Loader from "../../loaders/Loader";
+import { Helmet } from "react-helmet";
 
 const API_BASE_URL = "https://api.queen.kitchen";
 
@@ -75,6 +76,13 @@ function DishOfTheDay() {
 	}
 	return (
 		<>
+			<Helmet>
+				<meta
+					name="description"
+					content="order now the dish of the day at Queen Kitchen. اطلب الان من طبق اليوم في مطبخ الملكة."
+				/>
+			</Helmet>
+
 			{dish && <WeekMeal dish={dish} />}
 			<ReviewsSection reviews={reviews} />
 		</>

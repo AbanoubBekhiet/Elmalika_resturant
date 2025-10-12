@@ -7,6 +7,7 @@ import ProductCard from "./../../components/card/Card";
 import { ToastContainer } from "react-toastify";
 import { HiOutlineArrowRight } from "react-icons/hi";
 import { HiMiniArrowLeft } from "react-icons/hi2";
+import { Helmet } from "react-helmet";
 
 const API_BASE_URL = "https://api.queen.kitchen";
 
@@ -82,6 +83,13 @@ export default function ReadyForCook() {
 				<Loader />
 			) : (
 				<div dir="rtl" className="px-6 py-28 md:mx-[50px]">
+					<Helmet>
+						<meta
+							name="description"
+							content="Browse all our ready-to-eat products at Queen Kitchen. تصفّح كل منتجاتنا الجاهزة للأكل في مطبخ الملكة."
+						/>
+					</Helmet>
+
 					{/* Header */}
 					<div className="flex flex-col md:flex-row items-center justify-between mb-6">
 						<div>
